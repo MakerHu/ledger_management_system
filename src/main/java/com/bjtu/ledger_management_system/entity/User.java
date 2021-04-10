@@ -8,58 +8,64 @@ import java.util.Date;
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long u_id;
-    private String u_name;
-    private boolean u_gender;
-    private Date u_birthday;
-    private String u_email;
-    private String u_password;
+    @Column(name = "u_id")
+    private long id;
+    @Column(name = "u_name")
+    private String name;
+    @Column(name = "u_gender")
+    private boolean gender;
+    @Column(name = "u_birthday")
+    private Date birthday;
+    @Column(name = "u_email")
+    private String email;
+    @Column(name = "u_password")
+    private String password;
 
-    public long getU_id() {
-        return u_id;
+    public long getId() {
+        return id;
     }
 
-    public void setU_id(long u_id) {
-        this.u_id = u_id;
+    public void setId(long id) {
+        this.id = id;
     }
 
-    public String getU_name() {
-        return u_name;
+    public String getName() {
+        return name;
     }
 
-    public void setU_name(String u_name) {
-        this.u_name = u_name;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public boolean isU_gender() {
-        return u_gender;
+    public boolean isGender() {
+        return gender;
     }
 
-    public void setU_gender(boolean u_gender) {
-        this.u_gender = u_gender;
+    public void setGender(boolean gender) {
+        this.gender = gender;
     }
 
-    public Date getU_birthday() {
-        return u_birthday;
+    public Date getBirthday() {
+        return birthday;
     }
 
-    public void setU_birthday(Date u_birthday) {
-        this.u_birthday = u_birthday;
+    public void setBirthday(Date birthday) {
+        this.birthday = birthday;
     }
 
-    public String getU_email() {
-        return u_email;
+    public String getEmail() {
+        return email;
     }
 
-    public void setU_email(String u_email) {
-        this.u_email = u_email;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
-    public String getU_password() {
-        return u_password;
+    public String getPassword() {
+        return password;
     }
 
-    public void setU_password(String u_password) {
-        this.u_password = u_password;
+    public void setPassword(String password) {
+        this.password = password;
     }
 }
