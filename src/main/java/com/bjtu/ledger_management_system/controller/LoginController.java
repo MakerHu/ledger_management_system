@@ -16,6 +16,7 @@ public class LoginController {
 
     @PostMapping
     public Result<User> login(@RequestParam String email, @RequestParam String password){
+        //测试分支
         //测试分支master
 //    public Result<User> login(@RequestBody User user1){
 //        String email = user1.getEmail();
