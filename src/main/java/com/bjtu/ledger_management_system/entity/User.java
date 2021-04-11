@@ -9,9 +9,9 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "u_id")
-    private long id;
+    private long userId;
     @Column(name = "u_name")
-    private String name;
+    private String userName;
     @Column(name = "u_gender")
     private boolean gender;
     @Column(name = "u_birthday")
@@ -21,20 +21,20 @@ public class User {
     @Column(name = "u_password")
     private String password;
 
-    public long getId() {
-        return id;
+    public long getUserId() {
+        return userId;
     }
 
-    public void setId(long id) {
-        this.id = id;
+    public void setUserId(long userId) {
+        this.userId = userId;
     }
 
-    public String getName() {
-        return name;
+    public String getUserName() {
+        return userName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 
     public boolean isGender() {

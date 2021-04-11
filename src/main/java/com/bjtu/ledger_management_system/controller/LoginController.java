@@ -8,13 +8,13 @@ import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
 
 @RestController
-@RequestMapping("/login")
+//@RequestMapping("/")
 public class LoginController {
 
     @Resource
     private UserService userService;
 
-    @PostMapping
+    @PostMapping("/login")
     public Result<User> login(@RequestParam String email, @RequestParam String password){
         //测试分支
         //测试分支master

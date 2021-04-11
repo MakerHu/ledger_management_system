@@ -7,10 +7,10 @@ import javax.persistence.*;
 public class RolesRights {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-
+  @Column(name = "role_id")
   private long roleId;
+  @Column(name = "right_id")
   private long rightId;
-
 
   public long getRoleId() {
     return roleId;
@@ -20,7 +20,6 @@ public class RolesRights {
     this.roleId = roleId;
   }
 
-
   public long getRightId() {
     return rightId;
   }
@@ -28,5 +27,4 @@ public class RolesRights {
   public void setRightId(long rightId) {
     this.rightId = rightId;
   }
-
 }

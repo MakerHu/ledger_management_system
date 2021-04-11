@@ -3,15 +3,15 @@ import javax.persistence.*;
 
 @Table(name = "template_structure_content")
 @Entity
-
 public class TemplateStructureContent {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-
+  @Column(name = "struc_id")
   private String strucId;
+  @Column(name = "temp_id")
   private long tempId;
+  @Column(name = "content")
   private String content;
-
 
   public String getStrucId() {
     return strucId;
@@ -21,7 +21,6 @@ public class TemplateStructureContent {
     this.strucId = strucId;
   }
 
-
   public long getTempId() {
     return tempId;
   }
@@ -30,7 +29,6 @@ public class TemplateStructureContent {
     this.tempId = tempId;
   }
 
-
   public String getContent() {
     return content;
   }
@@ -38,5 +36,4 @@ public class TemplateStructureContent {
   public void setContent(String content) {
     this.content = content;
   }
-
 }

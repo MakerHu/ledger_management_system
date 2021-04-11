@@ -8,11 +8,12 @@ import javax.persistence.*;
 public class TemplateRelation {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-
+  @Column(name = "temp_id")
   private long tempId;
+  @Column(name = "super_id")
   private String superId;
+  @Column(name = "sub_id")
   private String subId;
-
 
   public long getTempId() {
     return tempId;
@@ -22,7 +23,6 @@ public class TemplateRelation {
     this.tempId = tempId;
   }
 
-
   public String getSuperId() {
     return superId;
   }
@@ -31,7 +31,6 @@ public class TemplateRelation {
     this.superId = superId;
   }
 
-
   public String getSubId() {
     return subId;
   }
@@ -39,5 +38,4 @@ public class TemplateRelation {
   public void setSubId(String subId) {
     this.subId = subId;
   }
-
 }
