@@ -9,77 +9,66 @@ public class Ledger {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "ledger_id")
-    private long ledgerId;
-    @Column(name = "ledger_name")
-    private String ledgerName;
-    @Column(name = "d_id")
-    private String departmentId;
-    @Column(name = "create_time")
-    private Date createTime;
-    @Column(name = "creator_id")
-    private long creatorId;
-    @Column(name = "temp_id")
-    private long tempId;
-    @Column(name = "record_tablename")
-    private String recordTableName;
-    @Column(name = "description")
+    private long ledgerid;
+
+    private String ledgername;
+
+    private String did;
+
+    private Date createtime;
+
+    private long creatorid;
+
+    private long tempid;
+
     private String description;
 
-    public long getLedgerId() {
-        return ledgerId;
+    public long getLedgerid() {
+        return ledgerid;
     }
 
-    public void setLedgerId(long ledgerId) {
-        this.ledgerId = ledgerId;
+    public void setLedgerid(long ledgerid) {
+        this.ledgerid = ledgerid;
     }
 
-    public String getLedgerName() {
-        return ledgerName;
+    public String getLedgername() {
+        return ledgername;
     }
 
-    public void setLedgerName(String ledgerName) {
-        this.ledgerName = ledgerName;
+    public void setLedgername(String ledgername) {
+        this.ledgername = ledgername;
     }
 
-    public String getDepartmentId() {
-        return departmentId;
+    public String getDid() {
+        return did;
     }
 
-    public void setDepartmentId(String departmentId) {
-        this.departmentId = departmentId;
+    public void setDid(String did) {
+        this.did = did;
     }
 
-    public Date getCreateTime() {
-        return createTime;
+    public Date getCreatetime() {
+        return createtime;
     }
 
-    public void setCreateTime(Date createTime) {
-        this.createTime = createTime;
+    public void setCreatetime(Date createtime) {
+        this.createtime = createtime;
     }
 
-    public long getCreatorId() {
-        return creatorId;
+    public long getCreatorid() {
+        return creatorid;
     }
 
-    public void setCreatorId(long creatorId) {
-        this.creatorId = creatorId;
+    public void setCreatorid(long creatorid) {
+        this.creatorid = creatorid;
     }
 
-    public long getTempId() {
-        return tempId;
+    public long getTempid() {
+        return tempid;
     }
 
-    public void setTempId(long tempId) {
-        this.tempId = tempId;
-    }
-
-    public String getRecordTableName() {
-        return recordTableName;
-    }
-
-    public void setRecordTableName(String recordTableName) {
-        this.recordTableName = recordTableName;
+    public void setTempid(long tempid) {
+        this.tempid = tempid;
     }
 
     public String getDescription() {

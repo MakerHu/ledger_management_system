@@ -8,49 +8,46 @@ import java.util.Date;
 public class Department {
 
     @Id
-    @Column(name = "d_id")
-    private String departmentId;
-    @Column(name = "d_name")
-    private String departmentName;
-    @Column(name = "manager_id")
-    private long managerId;
-    @Column(name = "create_time")
-    private Date createTime;
-    @Column(name = "description")
+    private String did;
+
+    private String dname;
+
+    private long dmanager;
+
+    private Date createtime;
+
     private String description;
-    @Column(name = "d_tel")
-    private String tel;
 
-    public String getDepartmentId() {
-        return departmentId;
+    public String getDid() {
+        return did;
     }
 
-    public void setDepartmentId(String departmentId) {
-        this.departmentId = departmentId;
+    public void setDid(String did) {
+        this.did = did;
     }
 
-    public String getDepartmentName() {
-        return departmentName;
+    public String getDname() {
+        return dname;
     }
 
-    public void setDepartmentName(String departmentName) {
-        this.departmentName = departmentName;
+    public void setDname(String dname) {
+        this.dname = dname;
     }
 
-    public long getManagerId() {
-        return managerId;
+    public long getDmanager() {
+        return dmanager;
     }
 
-    public void setManagerId(long managerId) {
-        this.managerId = managerId;
+    public void setDmanager(long dmanager) {
+        this.dmanager = dmanager;
     }
 
-    public Date getCreateTime() {
-        return createTime;
+    public Date getCreatetime() {
+        return createtime;
     }
 
-    public void setCreateTime(Date createTime) {
-        this.createTime = createTime;
+    public void setCreatetime(Date createtime) {
+        this.createtime = createtime;
     }
 
     public String getDescription() {
@@ -59,13 +56,5 @@ public class Department {
 
     public void setDescription(String description) {
         this.description = description;
-    }
-
-    public String getTel() {
-        return tel;
-    }
-
-    public void setTel(String tel) {
-        this.tel = tel;
     }
 }
