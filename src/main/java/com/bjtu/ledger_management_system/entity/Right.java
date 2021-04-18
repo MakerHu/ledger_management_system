@@ -10,27 +10,26 @@ public class Right {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "right_id")
-    private long rightId;
-    @Column(name = "right_name")
-    private String rightName;
-    @Column(name = "description")
+    private Long rightid;
+
+    private String rightname;
+
     private String description;
 
-    public long getRightId() {
-        return rightId;
+    public Long getRightid() {
+        return rightid;
     }
 
-    public void setRightId(long rightId) {
-        this.rightId = rightId;
+    public void setRightid(Long rightid) {
+        this.rightid = rightid;
     }
 
-    public String getRightName() {
-        return rightName;
+    public String getRightname() {
+        return rightname;
     }
 
-    public void setRightName(String rightName) {
-        this.rightName = rightName;
+    public void setRightname(String rightname) {
+        this.rightname = rightname;
     }
 
     public String getDescription() {
