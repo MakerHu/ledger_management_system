@@ -8,57 +8,56 @@ import java.util.Date;
 public class Template {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Column(name = "temp_id")
-  private long tempId;
-  @Column(name = "creator_id")
-  private long creatorId;
-  @Column(name = "create_time")
-  private Date createTime;
-  @Column(name = "d_id")
-  private String departmentId;
-  @Column(name = "temp_name")
-  private String tempName;
-  @Column(name = "description")
+  private Long tempid;
+
+  private Long creatorid;
+
+  private Date createtime;
+
+  private String did;
+
+  private String tempname;
+
   private String description;
 
-  public long getTempId() {
-    return tempId;
+  public Long getTempid() {
+    return tempid;
   }
 
-  public void setTempId(long tempId) {
-    this.tempId = tempId;
+  public void setTempid(Long tempid) {
+    this.tempid = tempid;
   }
 
-  public long getCreatorId() {
-    return creatorId;
+  public Long getCreatorid() {
+    return creatorid;
   }
 
-  public void setCreatorId(long creatorId) {
-    this.creatorId = creatorId;
+  public void setCreatorid(Long creatorid) {
+    this.creatorid = creatorid;
   }
 
-  public Date getCreateTime() {
-    return createTime;
+  public Date getCreatetime() {
+    return createtime;
   }
 
-  public void setCreateTime(Date createTime) {
-    this.createTime = createTime;
+  public void setCreatetime(Date createtime) {
+    this.createtime = createtime;
   }
 
-  public String getDepartmentId() {
-    return departmentId;
+  public String getDid() {
+    return did;
   }
 
-  public void setDepartmentId(String departmentId) {
-    this.departmentId = departmentId;
+  public void setDid(String did) {
+    this.did = did;
   }
 
-  public String getTempName() {
-    return tempName;
+  public String getTempname() {
+    return tempname;
   }
 
-  public void setTempName(String tempName) {
-    this.tempName = tempName;
+  public void setTempname(String tempname) {
+    this.tempname = tempname;
   }
 
   public String getDescription() {

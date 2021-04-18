@@ -7,24 +7,33 @@ import javax.persistence.*;
 public class RolesRights {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Column(name = "role_id")
-  private long roleId;
-  @Column(name = "right_id")
-  private long rightId;
+  private Long id;
 
-  public long getRoleId() {
-    return roleId;
+  private Long roleid;
+
+  private Long rightid;
+
+  public Long getId() {
+    return id;
   }
 
-  public void setRoleId(long roleId) {
-    this.roleId = roleId;
+  public void setId(Long id) {
+    this.id = id;
   }
 
-  public long getRightId() {
-    return rightId;
+  public Long getRoleid() {
+    return roleid;
   }
 
-  public void setRightId(long rightId) {
-    this.rightId = rightId;
+  public void setRoleid(Long roleid) {
+    this.roleid = roleid;
+  }
+
+  public Long getRightid() {
+    return rightid;
+  }
+
+  public void setRightid(Long rightid) {
+    this.rightid = rightid;
   }
 }
