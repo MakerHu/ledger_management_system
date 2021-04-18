@@ -8,10 +8,11 @@ import javax.persistence.*;
 public class UsersRoles {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Column(name = "u_id")
   private long id;
-  @Column(name = "role_id")
-  private long roleId;
+
+  private long uid;
+
+  private long roleid;
 
   public long getId() {
     return id;
@@ -21,11 +22,19 @@ public class UsersRoles {
     this.id = id;
   }
 
-  public long getRoleId() {
-    return roleId;
+  public long getUid() {
+    return uid;
   }
 
-  public void setRoleId(long roleId) {
-    this.roleId = roleId;
+  public void setUid(long uid) {
+    this.uid = uid;
+  }
+
+  public long getRoleid() {
+    return roleid;
+  }
+
+  public void setRoleid(long roleid) {
+    this.roleid = roleid;
   }
 }

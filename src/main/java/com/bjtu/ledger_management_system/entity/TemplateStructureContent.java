@@ -6,27 +6,36 @@ import javax.persistence.*;
 public class TemplateStructureContent {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Column(name = "struc_id")
-  private String strucId;
-  @Column(name = "temp_id")
-  private long tempId;
-  @Column(name = "content")
+  private long id;
+
+  private long tempid;
+
+  private long strucid;
+
   private String content;
 
-  public String getStrucId() {
-    return strucId;
+  public long getId() {
+    return id;
   }
 
-  public void setStrucId(String strucId) {
-    this.strucId = strucId;
+  public void setId(long id) {
+    this.id = id;
   }
 
-  public long getTempId() {
-    return tempId;
+  public long getTempid() {
+    return tempid;
   }
 
-  public void setTempId(long tempId) {
-    this.tempId = tempId;
+  public void setTempid(long tempid) {
+    this.tempid = tempid;
+  }
+
+  public long getStrucid() {
+    return strucid;
+  }
+
+  public void setStrucid(long strucid) {
+    this.strucid = strucid;
   }
 
   public String getContent() {

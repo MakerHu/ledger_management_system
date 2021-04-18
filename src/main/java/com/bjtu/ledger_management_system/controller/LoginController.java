@@ -16,15 +16,12 @@ public class LoginController {
 
     @PostMapping("/login")
     public Result<User> login(@RequestParam String email, @RequestParam String password){
-        //测试分支
-        //测试分支master
-//    public Result<User> login(@RequestBody User user1){
-//        String email = user1.getEmail();
-//        String password = user1.getPassword();
         try{
             User user = userService.findByEmail(email);
             if (user != null){
                 if (user.getPassword().equals(password)){
+                    //消除返回前端的收能过户数据中的重要信息
+                    user.setPassword("");
                     return Result.success(user);
                 }else {
                     return Result.error("1", "用户名或密码错误！");

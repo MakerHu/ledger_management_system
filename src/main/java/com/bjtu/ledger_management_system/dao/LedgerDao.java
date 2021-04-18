@@ -8,7 +8,7 @@ import java.util.List;
 
 @Repository
 public interface LedgerDao extends JpaRepository<Ledger, Long> {
-    List<Ledger> findByLedgerName(String ledgerName);
-    List<Ledger> findByDepartmentId(String departmentId);
-    List<Ledger> findByCreatorId(long creatorId);
+    List<Ledger> findByLedgername(String ledgerName);
+    List<Ledger> findByDid(String departmentId);
+    List<Ledger> findByCreatorid(long creatorId);
 }

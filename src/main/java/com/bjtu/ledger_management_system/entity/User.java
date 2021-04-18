@@ -8,33 +8,32 @@ import java.util.Date;
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "u_id")
-    private long userId;
-    @Column(name = "u_name")
-    private String userName;
-    @Column(name = "u_gender")
+    private long uid;
+
+    private String uname;
+
     private boolean gender;
-    @Column(name = "u_birthday")
-    private Date birthday;
-    @Column(name = "u_email")
+
     private String email;
-    @Column(name = "u_password")
+
     private String password;
 
-    public long getUserId() {
-        return userId;
+    private Date birthday;
+
+    public long getUid() {
+        return uid;
     }
 
-    public void setUserId(long userId) {
-        this.userId = userId;
+    public void setUid(long uid) {
+        this.uid = uid;
     }
 
-    public String getUserName() {
-        return userName;
+    public String getUname() {
+        return uname;
     }
 
-    public void setUserName(String userName) {
-        this.userName = userName;
+    public void setUname(String uname) {
+        this.uname = uname;
     }
 
     public boolean isGender() {
@@ -43,14 +42,6 @@ public class User {
 
     public void setGender(boolean gender) {
         this.gender = gender;
-    }
-
-    public Date getBirthday() {
-        return birthday;
-    }
-
-    public void setBirthday(Date birthday) {
-        this.birthday = birthday;
     }
 
     public String getEmail() {
@@ -67,5 +58,13 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public Date getBirthday() {
+        return birthday;
+    }
+
+    public void setBirthday(Date birthday) {
+        this.birthday = birthday;
     }
 }
