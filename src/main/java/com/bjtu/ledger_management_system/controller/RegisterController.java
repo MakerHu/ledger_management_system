@@ -5,14 +5,12 @@ import com.bjtu.ledger_management_system.entity.User;
 import com.bjtu.ledger_management_system.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 
 @RestController
+@RequestMapping("/register")
 public class RegisterController {
     @Autowired
     private BCryptPasswordEncoder encoding;
@@ -20,7 +18,7 @@ public class RegisterController {
     @Resource
     private UserService userService;
 
-    @PostMapping("/register")
+    @PostMapping("/single")
     public Result<User> register(@RequestBody User user){
         try{
             User existUser = userService.findByEmail(user.getEmail());
@@ -29,7 +27,7 @@ public class RegisterController {
                 userService.add(user);
                 return Result.success();
             }else{
-                return Result.error("2", "邮箱已被使用！");
+                return Result.error("3", "邮箱已被使用！");
             }
 
         }catch (Exception e){

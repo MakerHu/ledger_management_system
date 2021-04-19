@@ -50,6 +50,13 @@ public class Result<T> {
         return result;
     }
 
+    public static <T> Result<T> success(T data,String msg) {
+        Result<T> result = new Result<>(data);
+        result.setCode("0");
+        result.setMsg(msg);
+        return result;
+    }
+
     public static Result error(String code, String msg) {
         Result result = new Result();
         result.setCode(code);
