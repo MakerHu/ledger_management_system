@@ -37,7 +37,7 @@ public class RightServiceImpl implements RightService {
     @Override
     public Page<Role> getAllDepartRoles(String did, boolean isExpand,Integer pageNum,Integer pageSize) {
 
-        if (departmentDao.findById(did).isEmpty()) {
+        if (!departmentDao.findById(did).isPresent()) {
             return null;
         } else {
             if (!isExpand) {
@@ -81,7 +81,7 @@ public class RightServiceImpl implements RightService {
 
     @Override
     public boolean modifyRoleInDepart(Role role, List<Right> rightList) {
-        if (roleDao.findById(role.getRoleid()).isEmpty()) {
+        if (!roleDao.findById(role.getRoleid()).isPresent()) {
             return false;
         } else {
             Role newRole = new Role();
