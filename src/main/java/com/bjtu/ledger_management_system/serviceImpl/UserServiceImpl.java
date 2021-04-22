@@ -1,18 +1,31 @@
 package com.bjtu.ledger_management_system.serviceImpl;
 
+import com.bjtu.ledger_management_system.common.Result;
+import com.bjtu.ledger_management_system.dao.DepartmentDao;
+import com.bjtu.ledger_management_system.dao.RoleDao;
 import com.bjtu.ledger_management_system.dao.UserDao;
+import com.bjtu.ledger_management_system.dao.UsersRolesDao;
+import com.bjtu.ledger_management_system.entity.Role;
 import com.bjtu.ledger_management_system.entity.User;
+import com.bjtu.ledger_management_system.entity.UsersRoles;
 import com.bjtu.ledger_management_system.service.UserService;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class UserServiceImpl implements UserService {
     @Resource
     private UserDao userDao;
-
+    @Resource
+    private UsersRolesDao usersRolesDao;
+    @Resource
+    private DepartmentDao departmentDao;
+    @Resource
+    private RoleDao roleDao;
     /**
      * 添加用户
      * @param user
@@ -81,5 +94,63 @@ public class UserServiceImpl implements UserService {
     @Override
     public Page<User> findPage(Integer pageNum, Integer pageSize, String name) {
         return null;
+    }
+
+    /**
+     * 根据传过来的的角色列表在userole表中找到uid集合
+     * @param roleList
+     * @return
+     */
+    @Override
+    public List<Long> findUidList(List<Role> roleList){
+        List<Long> uidList = new ArrayList<>();
+        for (Role role : roleList) {
+            for (UsersRoles usersroles : usersRolesDao.findByRoleid(role.getRoleid())) {
+                uidList.add(usersroles.getUid());
+            }
+        }
+        return removeDuplicate(uidList);
+    }
+
+    /**
+     * 对list进行去重
+     * @param list
+     * @return
+     */
+    public static List<Long> removeDuplicate(List<Long> list){
+        List<Long> listTemp = new ArrayList<Long>();
+        for (Long aLong : list) {
+            if (!listTemp.contains(aLong)) {
+                listTemp.add(aLong);
+            }
+        }
+        return listTemp;
+    }
+
+    /**
+     * 从用户表中取出User
+     * @param userList
+     * @return
+     */
+    @Override
+   public List<User> findUsersList(List<Long> userList){
+        List<User> list=new ArrayList<>();
+       for(int i=0;i<userList.size();i++){
+           list.add(userDao.findByUid(userList.get(i)));
+       }
+
+       return list;
+    }
+
+    @Override
+    public Result<List<Role>> getAllDepartRoles(String did, boolean isExpand) {
+            if (!isExpand) {
+                List<Role> roleList = roleDao.findByDid(did);
+                return Result.success(roleList);
+            } else {
+                List<Role> roleList = roleDao.findByDidStartingWith(did);
+                return Result.success(roleList);
+            }
+
     }
 }
