@@ -18,6 +18,8 @@ public class Department {
 
     private String description;
 
+    private String tel;
+
     public String getDid() {
         return did;
     }
@@ -56,5 +58,13 @@ public class Department {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public String getTel() {
+        return tel;
+    }
+
+    public void setTel(String tel) {
+        this.tel = tel;
     }
 }
