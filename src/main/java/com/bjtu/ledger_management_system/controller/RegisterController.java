@@ -19,12 +19,12 @@ public class RegisterController {
     private UserService userService;
 
     @PostMapping("/single")
-    public Result<User> register(@RequestBody User user){
+    public Result<User> register(@RequestBody User newUser){
         try{
-            User existUser = userService.findByEmail(user.getEmail());
+            User existUser = userService.findByEmail(newUser.getEmail());
             if (existUser == null){
-                user.setPassword(encoding.encode(user.getPassword()));
-                userService.add(user);
+                newUser.setPassword(encoding.encode(newUser.getPassword()));
+                userService.add(newUser);
                 return Result.success();
             }else{
                 return Result.error("3", "邮箱已被使用！");
