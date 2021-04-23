@@ -64,7 +64,7 @@ public class RightServiceImpl implements RightService {
         }
         roleDao.save(role);
         roleList = roleDao.findByDid(role.getDid());
-        Long roleid;
+        Long roleid = null;
         for (Role item : roleList) {
             if (item.getRolename().equals(role.getRolename())) {
                 roleid = item.getRoleid();
@@ -72,9 +72,10 @@ public class RightServiceImpl implements RightService {
             }
         }
         for (Right value : rightList) {
-            Right right = new Right();
-            right.setRightname(value.getRightname());
-            right.setDescription(value.getDescription());
+            RolesRights roleright = new RolesRights();
+            roleright.setRoleid(roleid);
+            roleright.setRightid(value.getRightid());
+            rolesRightsDao.save(roleright);
         }
         return true;
     }

@@ -5,8 +5,8 @@ import com.bjtu.ledger_management_system.common.Result;
 import com.bjtu.ledger_management_system.entity.Right;
 import com.bjtu.ledger_management_system.entity.Role;
 import com.bjtu.ledger_management_system.service.RightService;
+import com.bjtu.ledger_management_system.serviceImpl.DTO.createRoleInDePartDTO;
 import org.springframework.data.domain.Page;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -15,7 +15,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/role")
 public class RoleController {
-
+    private static final long serialVersionUID = -1242493306307174690L;
     @Resource
     RightService rightService;
 
@@ -34,9 +34,11 @@ public class RoleController {
 
     }
 
-    @PostMapping("/create")
-    public Result<Role> createRoleInDepart(@RequestBody Role role, @RequestBody List<Right> rightList) {
+    @RequestMapping("/create")
+    public Result<Role> createRoleInDepart(@RequestBody createRoleInDePartDTO dto) {
 
+        Role role = dto.role;
+        List<Right> rightList = dto.rightList;
         if (rightService.createRoleInDepart(role, rightList)) {
             return Result.success();
         } else {
@@ -45,7 +47,9 @@ public class RoleController {
     }
 
     @PostMapping("/modify")
-    public Result modifyRoleInDepart(@RequestBody Role role, @RequestBody List<Right> rightList) {
+    public Result modifyRoleInDepart(@RequestBody createRoleInDePartDTO dto) {
+        Role role = dto.role;
+        List<Right> rightList = dto.rightList;
         if (rightService.modifyRoleInDepart(role, rightList)) {
             return Result.success();
         } else {
