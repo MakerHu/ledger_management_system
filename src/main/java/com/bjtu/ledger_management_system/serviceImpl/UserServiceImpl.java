@@ -10,6 +10,9 @@ import com.bjtu.ledger_management_system.entity.User;
 import com.bjtu.ledger_management_system.entity.UsersRoles;
 import com.bjtu.ledger_management_system.service.UserService;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -143,14 +146,35 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Result<List<Role>> getAllDepartRoles(String did, boolean isExpand) {
+    public List<Role> getAllDepartRoles(String did, boolean isExpand) {
             if (!isExpand) {
                 List<Role> roleList = roleDao.findByDid(did);
-                return Result.success(roleList);
+                return roleList;
             } else {
                 List<Role> roleList = roleDao.findByDidStartingWith(did);
-                return Result.success(roleList);
+                return roleList;
             }
 
     }
+
+    /**
+     * userList转换为Page
+     * @param list
+     * @param pageNum
+     * @param pageSize
+     * @param <User>
+     * @return
+     */
+    @Override
+    public <User> Page<User> listConvertToPage(List<User> list,Integer pageNum, Integer pageSize) {
+        PageRequest pageable = PageRequest.of(pageNum-1,pageSize);
+        // 当前页第一条数据在List中的位置
+        int start = (int)pageable.getOffset();
+        // 当前页最后一条数据在List中的位置
+        int end = (start + pageable.getPageSize()) > list.size() ? list.size() : ( start + pageable.getPageSize());
+        // 配置分页数据
+        if(start > end)return null;
+        return new PageImpl<User>(list.subList(start, end), pageable, list.size());
+    }
+
 }
