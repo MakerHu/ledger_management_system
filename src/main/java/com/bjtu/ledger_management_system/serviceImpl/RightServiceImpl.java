@@ -36,19 +36,19 @@ public class RightServiceImpl implements RightService {
 
     @Override
     public Page<Role> getAllDepartRoles(String did, boolean isExpand,Integer pageNum,Integer pageSize) {
-
+        Page<Role> rolepage=null;
         if (!departmentDao.findById(did).isPresent()) {
             return null;
         } else {
             if (!isExpand) {
                 Sort sort = Sort.by(Sort.Direction.ASC,"roleid");
                 PageRequest request= PageRequest.of(pageNum-1,pageSize,sort);
-                Page<Role> rolepage= roleDao.findByDid(did,request);
+                rolepage= roleDao.findByDid(did,request);
                 return rolepage;
             } else {
                 Sort sort = Sort.by(Sort.Direction.ASC,"roleid");
                 PageRequest request= PageRequest.of(pageNum-1,pageSize,sort);
-                Page<Role> rolepage = roleDao.findByDidStartingWith(did,request);
+                rolepage = roleDao.findByDidStartingWith(did,request);
                 return rolepage;
             }
         }
@@ -91,7 +91,7 @@ public class RightServiceImpl implements RightService {
             newRole.setDid(role.getDid());
             newRole.setDescription(role.getDescription());
             roleDao.save(newRole);
-            List<RolesRights> rolesRightsList = rolesRightsDao.findByRightid(role.getRoleid());
+            List<RolesRights> rolesRightsList = rolesRightsDao.findByRoleid(role.getRoleid());
             /* 删除该角色所有权限 */
             for (RolesRights value : rolesRightsList){
                 rolesRightsDao.delete(value);
@@ -118,6 +118,22 @@ public class RightServiceImpl implements RightService {
             newUsersRoles.setRoleid(roleid);
             newUsersRoles.setUid(uid);
             usersRolesDao.save(newUsersRoles);
+        }
+    }
+
+    @Override
+    public List<Role> getAllDepartRolesList(String did, boolean isExpand){
+        List<Role> roleList=null;
+        if (!departmentDao.findById(did).isPresent()) {
+            return null;
+        } else {
+            if (!isExpand) {
+                roleList= roleDao.findByDid(did);
+                return roleList;
+            } else {
+                roleList = roleDao.findByDidStartingWith(did);
+                return roleList;
+            }
         }
     }
 }

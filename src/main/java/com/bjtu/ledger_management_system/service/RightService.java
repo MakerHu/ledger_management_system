@@ -11,9 +11,12 @@ public interface RightService {
 
     /**
      *
-     * @param did  部门编号
+     * @param did 部门编号
      * @param isExpand  是否向下拓展（是否将该部门的子部门角色也获取出来）
-     * @return
+     * @param pageNum 页码编号
+     * @param pageSize  页码大小
+     * @return Role的分页对象
+     *
      */
     Page<Role> getAllDepartRoles(String did, boolean isExpand,Integer pageNum,Integer pageSize);
 
@@ -22,7 +25,7 @@ public interface RightService {
      * 3.2.在某部门下创建角色
      * @param role   Role对象
      * @param rightList  权限数组
-     * @return
+     * @return  是否成功创建
      */
     boolean createRoleInDepart(Role role, List<Right> rightList);
 
@@ -30,7 +33,7 @@ public interface RightService {
      * 3.3.修改某部门某角色信息
      * @param role  Role对象
      * @param rightList  权限数组
-     * @return
+     * @return 是否成功修改
      */
     boolean modifyRoleInDepart(Role role,List<Right> rightList);
 
@@ -39,8 +42,17 @@ public interface RightService {
      * 3.4.用户角色分配与用户角色修改
      * @param uid  用户编号
      * @param roleidList  角色编号数组
-     * @return
+     * @return 无
      */
     void modifyOrAllotUserOneRole(Long uid,List<Long> roleidList);
+
+
+    /**
+     *
+     * @param did 部门编号
+     * @param isExpand  是否显示子部门
+     * @return Role列表
+     */
+    List<Role> getAllDepartRolesList(String did, boolean isExpand);
 
 }
