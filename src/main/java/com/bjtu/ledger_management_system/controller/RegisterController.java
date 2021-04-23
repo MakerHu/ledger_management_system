@@ -8,6 +8,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
+import java.util.List;
 
 @RestController
 @RequestMapping("/register")
@@ -19,7 +21,7 @@ public class RegisterController {
     private UserService userService;
 
     @PostMapping("/single")
-    public Result<User> register(@RequestBody User newUser){
+    public Result<User> createSingleUser(@RequestBody User newUser){
         try{
             User existUser = userService.findByEmail(newUser.getEmail());
             if (existUser == null){
@@ -33,6 +35,27 @@ public class RegisterController {
         }catch (Exception e){
             e.printStackTrace();
             return null;
+        }
+    }
+
+    @PostMapping("/batch")
+    public Result<List<User>> createBatchUser(@RequestBody List<User> newUserList){
+        List<User> errorList = new ArrayList<>();
+        for (User newUser : newUserList) {
+            User existUser = userService.findByEmail(newUser.getEmail());
+
+            if (existUser == null){
+                newUser.setPassword(encoding.encode(newUser.getPassword()));
+                userService.add(newUser);
+
+            }else{
+                errorList.add(newUser);
+            }
+        }
+        if(errorList.size()==0){
+            return Result.success();
+        }else{
+            return Result.success(errorList,"存在邮箱重复！");
         }
     }
 

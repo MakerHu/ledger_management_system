@@ -10,6 +10,7 @@ import java.util.List;
 @Repository
 public interface DepartmentDao extends JpaRepository<Department,String>  {
     Department findByDname(String name);
+    List<Department> findByDidStartingWith(String did);
     List<Department> findByDmanager(long manager);
     List<Department> findByCreatetime(Date createtime);
 
