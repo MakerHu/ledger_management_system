@@ -6,6 +6,7 @@ import com.bjtu.ledger_management_system.service.DepartmentService;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 @RestController
 @RequestMapping("/department")
@@ -30,6 +31,17 @@ public class DepartmentController {
         if (existDepartment != null){
             departmentService.modifyDepartment(department);
             return Result.success();
+        }else{
+            return Result.error("4","此部门不存在！");
+        }
+    }
+
+    @GetMapping("/departmentlist")
+    public Result<List<Department>> getDepartmentList(@RequestParam String superDid,@RequestParam boolean isExpand){
+        Department existDepartment = departmentService.findByDid(superDid);
+        if (existDepartment != null){
+            List<Department> requestList = departmentService.getDepartmentList(superDid,isExpand);
+            return Result.success(requestList);
         }else{
             return Result.error("4","此部门不存在！");
         }

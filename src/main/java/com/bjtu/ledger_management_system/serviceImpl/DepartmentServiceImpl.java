@@ -21,16 +21,35 @@ public class DepartmentServiceImpl implements DepartmentService {
     @Override
     public void createDepartment(String superDid, Department newDepartment) {
 //        List<Department> departmentList = departmentDao.findByDidStartingWith(superDid);
-        List<Department> departmentList = departmentDao.findByDidStartWithAndLength(superDid, superDid.length()+2);
+        List<Department> departmentList = departmentDao.findNextLevelDepartment(superDid, superDid.length()+2);
         int departmentCount = departmentList.size();
         String newDid = superDid + "." + (departmentCount+1);
         newDepartment.setDid(newDid);
         departmentDao.save(newDepartment);
     }
 
+    /**
+     * 修改部门信息
+     * @param department
+     */
     @Override
     public void modifyDepartment(Department department) {
         departmentDao.save(department);
+    }
+
+    /**
+     * 获取某部门下的所有部门
+     * @param superDid
+     * @param isExpand 为true时向下拓展否则只传回下一级子部门
+     * @return
+     */
+    @Override
+    public List<Department> getDepartmentList(String superDid, boolean isExpand) {
+        if(isExpand){
+            return departmentDao.findTotalSubDepartment(superDid,superDid.length());
+        }else{
+            return departmentDao.findNextLevelDepartment(superDid,superDid.length()+2);
+        }
     }
 
     @Override
