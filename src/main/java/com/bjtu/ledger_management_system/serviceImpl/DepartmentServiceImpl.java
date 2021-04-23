@@ -20,9 +20,10 @@ public class DepartmentServiceImpl implements DepartmentService {
      */
     @Override
     public void createDepartment(String superDid, Department newDepartment) {
-        List<Department> departmentList = departmentDao.findByDidStartingWith(superDid);
+//        List<Department> departmentList = departmentDao.findByDidStartingWith(superDid);
+        List<Department> departmentList = departmentDao.findByDidStartWithAndLength(superDid, superDid.length()+2);
         int departmentCount = departmentList.size();
-        String newDid = superDid + "." + (departmentCount);
+        String newDid = superDid + "." + (departmentCount+1);
         newDepartment.setDid(newDid);
         departmentDao.save(newDepartment);
     }

@@ -5,7 +5,7 @@ import com.bjtu.ledger_management_system.common.Result;
 import com.bjtu.ledger_management_system.entity.Right;
 import com.bjtu.ledger_management_system.entity.Role;
 import com.bjtu.ledger_management_system.service.RightService;
-import com.bjtu.ledger_management_system.serviceImpl.DTO.createRoleInDePartDTO;
+import com.bjtu.ledger_management_system.controller.dto.CreateRoleInDepartDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 
@@ -35,7 +35,7 @@ public class RoleController {
     }
 
     @RequestMapping("/create")
-    public Result<Role> createRoleInDepart(@RequestBody createRoleInDePartDTO dto) {
+    public Result<Role> createRoleInDepart(@RequestBody CreateRoleInDepartDTO dto) {
 
         Role role = dto.role;
         List<Right> rightList = dto.rightList;
@@ -47,7 +47,7 @@ public class RoleController {
     }
 
     @PostMapping("/modify")
-    public Result modifyRoleInDepart(@RequestBody createRoleInDePartDTO dto) {
+    public Result modifyRoleInDepart(@RequestBody CreateRoleInDepartDTO dto) {
         Role role = dto.role;
         List<Right> rightList = dto.rightList;
         if (rightService.modifyRoleInDepart(role, rightList)) {
