@@ -58,7 +58,7 @@ public class RoleController {
     }
 
     @PostMapping("/distribute")
-    public Result modifyOrAllotUserOneRole(@RequestParam Long uid, @RequestBody List<Long> roleidList) {
+    public Result modifyOrAllotUserOneRole(@RequestParam(name="uid") Long uid, @RequestParam("roleidList") List<Long> roleidList) {
         rightService.modifyOrAllotUserOneRole(uid, roleidList);
         return Result.success();
     }
