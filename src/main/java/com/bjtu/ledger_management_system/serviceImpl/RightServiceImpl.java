@@ -37,7 +37,7 @@ public class RightServiceImpl implements RightService {
     @Override
     public Page<Role> getAllDepartRoles(String did, boolean isExpand,Integer pageNum,Integer pageSize) {
 
-        if (departmentDao.findById(did).isEmpty()) {
+        if (!departmentDao.findById(did).isPresent()) {
             return null;
         } else {
             if (!isExpand) {
@@ -64,7 +64,7 @@ public class RightServiceImpl implements RightService {
         }
         roleDao.save(role);
         roleList = roleDao.findByDid(role.getDid());
-        Long roleid;
+        Long roleid = null;
         for (Role item : roleList) {
             if (item.getRolename().equals(role.getRolename())) {
                 roleid = item.getRoleid();
@@ -72,16 +72,17 @@ public class RightServiceImpl implements RightService {
             }
         }
         for (Right value : rightList) {
-            Right right = new Right();
-            right.setRightname(value.getRightname());
-            right.setDescription(value.getDescription());
+            RolesRights roleright = new RolesRights();
+            roleright.setRoleid(roleid);
+            roleright.setRightid(value.getRightid());
+            rolesRightsDao.save(roleright);
         }
         return true;
     }
 
     @Override
     public boolean modifyRoleInDepart(Role role, List<Right> rightList) {
-        if (roleDao.findById(role.getRoleid()).isEmpty()) {
+        if (!roleDao.findById(role.getRoleid()).isPresent()) {
             return false;
         } else {
             Role newRole = new Role();
