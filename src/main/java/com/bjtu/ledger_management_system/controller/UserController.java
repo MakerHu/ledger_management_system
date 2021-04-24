@@ -29,6 +29,11 @@ public class UserController {
                 userService.update(modifyUser);
                 return Result.success();
             }else{
+
+                if(existUser.getUid() == modifyUser.getUid()){
+                    userService.update(modifyUser);
+                    return Result.success();
+                }
                 return Result.error("2", "邮箱重复！");
             }
 
