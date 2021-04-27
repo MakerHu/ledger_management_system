@@ -1,6 +1,8 @@
 package com.bjtu.ledger_management_system.service;
 
 import com.bjtu.ledger_management_system.common.Result;
+import com.bjtu.ledger_management_system.entity.Department;
+import com.bjtu.ledger_management_system.entity.Right;
 import com.bjtu.ledger_management_system.entity.Role;
 import com.bjtu.ledger_management_system.entity.User;
 import org.springframework.data.domain.Page;
@@ -22,4 +24,11 @@ public interface UserService {
     List<User> findUsersList(List<Long>userList);
     List<Long> findUidList(List<Role>roleList);
     <User> Page<User> listConvertToPage(List<User> list, Integer pageNum, Integer pageSize);
+
+    List<Role> getUserAllRoles(long uid);
+    List<Right> getRightsInThisDepartment(long uid, String did);
+    List<Right> getRightsInDepartment(long uid, String did);
+    Page<User> getAllUsers(int pageNum, int pageSize);
+    List<Role> getRolesInDepartment(String did, long uid);
+    List<Department> getUserDepartments (long uid);
 }

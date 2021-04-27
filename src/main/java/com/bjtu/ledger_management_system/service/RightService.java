@@ -55,4 +55,5 @@ public interface RightService {
      */
     List<Role> getAllDepartRolesList(String did, boolean isExpand);
 
+
 }

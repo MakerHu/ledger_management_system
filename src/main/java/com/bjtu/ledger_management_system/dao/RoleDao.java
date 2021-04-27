@@ -14,6 +14,7 @@ import java.util.List;
 public interface RoleDao extends JpaRepository<Role, Long> {
     Role findByRolename(String rolename);
     List<Role> findByDid(String did);
+    Role findByRoleidAndDid(long roleid,String did);
     List<Role> findByDidStartingWith(String did);
     Page<Role> findByDid(String did, Pageable request);
     Page<Role> findByDidStartingWith(String did, Pageable pageable);

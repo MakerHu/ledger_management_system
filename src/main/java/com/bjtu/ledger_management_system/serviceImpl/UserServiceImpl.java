@@ -1,13 +1,8 @@
 package com.bjtu.ledger_management_system.serviceImpl;
 
 import com.bjtu.ledger_management_system.common.Result;
-import com.bjtu.ledger_management_system.dao.DepartmentDao;
-import com.bjtu.ledger_management_system.dao.RoleDao;
-import com.bjtu.ledger_management_system.dao.UserDao;
-import com.bjtu.ledger_management_system.dao.UsersRolesDao;
-import com.bjtu.ledger_management_system.entity.Role;
-import com.bjtu.ledger_management_system.entity.User;
-import com.bjtu.ledger_management_system.entity.UsersRoles;
+import com.bjtu.ledger_management_system.dao.*;
+import com.bjtu.ledger_management_system.entity.*;
 import com.bjtu.ledger_management_system.service.UserService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -29,6 +24,10 @@ public class UserServiceImpl implements UserService {
     private DepartmentDao departmentDao;
     @Resource
     private RoleDao roleDao;
+    @Resource
+    private RolesRightsDao rolesRightsDao;
+    @Resource
+    private RightDao rightDao;
     /**
      * 添加用户
      * @param user
@@ -120,9 +119,9 @@ public class UserServiceImpl implements UserService {
      * @param list
      * @return
      */
-    public static List<Long> removeDuplicate(List<Long> list){
-        List<Long> listTemp = new ArrayList<Long>();
-        for (Long aLong : list) {
+    public static <T> List<T> removeDuplicate(List<T> list){
+        List<T> listTemp = new ArrayList<>();
+        for (T aLong : list) {
             if (!listTemp.contains(aLong)) {
                 listTemp.add(aLong);
             }
@@ -176,5 +175,117 @@ public class UserServiceImpl implements UserService {
         if(start > end)return null;
         return new PageImpl<User>(list.subList(start, end), pageable, list.size());
     }
+
+    /**
+     * 获取某用户的所有角色
+     * @param uid 用户编号
+     * @return
+     */
+    @Override
+    public List<Role> getUserAllRoles(long uid) {
+        List<UsersRoles> usersRolesList = usersRolesDao.findByUid(uid);
+        List<Role> roleList = new ArrayList<>();
+        for (UsersRoles usersRoles : usersRolesList) {
+            Role role = roleDao.findById(usersRoles.getRoleid()).orElse(null);
+            roleList.add(role);
+        }
+        return roleList;
+    }
+
+    /**
+     * 获取用户在此部门下的权限，不包括从上级继承来的权限
+     * @param uid
+     * @param did
+     * @return
+     */
+    @Override
+    public List<Right> getRightsInThisDepartment(long uid, String did) {
+        List<Role> rolesList = getRolesInDepartment(did,uid);
+        List<Right> requestRightList = new ArrayList<>();
+        // 遍历所有的角色
+        for (Role role : rolesList){
+            List<RolesRights> rolesRightsList = rolesRightsDao.findByRoleid(role.getRoleid());
+            // 遍历该角色的所有权限id
+            for (RolesRights rolesRights : rolesRightsList){
+                Right right = rightDao.findByRightid(rolesRights.getRightid());
+                // 去重
+                if(right != null && !requestRightList.contains(right)){
+                    requestRightList.add(right);
+                }
+            }
+        }
+        return requestRightList;
+    }
+
+    /**
+     * 获取某用户在某部门下的所有权限
+     * @param uid 用户编号
+     * @param did 部门编号
+     * @return
+     */
+    @Override
+    public List<Right> getRightsInDepartment(long uid, String did) {
+        List<Right> requestRightList = new ArrayList<>();
+        for(int i=0;i<did.length();){
+            String thisDid = did.substring(0,i+1);
+            List<Right> rightsInThisDepartment = getRightsInThisDepartment(uid,thisDid);
+            requestRightList.addAll(rightsInThisDepartment);
+            i+=2;
+        }
+        return removeDuplicate(requestRightList);
+    }
+
+    /**
+     * 获取系统中的所有用户
+     * @param pageNum
+     * @param pageSize
+     * @return
+     */
+    @Override
+    public Page<User> getAllUsers(int pageNum, int pageSize) {
+        PageRequest pageable = PageRequest.of(pageNum-1,pageSize);
+        Page<User> allusersPage = userDao.findAll(pageable);
+        for (User user : allusersPage.getContent()) {
+            user.setPassword("");
+        }
+        return allusersPage;
+    }
+
+    /**
+     * 获取某用户在某部门的角色
+     * @param did
+     * @param uid
+     * @return
+     */
+    @Override
+    public List<Role> getRolesInDepartment(String did, long uid) {
+        //从users_roles表中获取用户的所有角色编号
+        List<UsersRoles> usersRolesList = usersRolesDao.findByUid(uid);
+        List<Role> roleList = new ArrayList<>();
+        for (UsersRoles usersRoles : usersRolesList) {
+            Role role = roleDao.findByRoleidAndDid(usersRoles.getRoleid(),did);
+            if (role!=null){
+                roleList.add(role);
+            }
+        }
+        return roleList;
+    }
+
+    /**
+     * 获取某用户所在的所有部门
+     * @param uid
+     * @return
+     */
+    @Override
+    public List<Department> getUserDepartments(long uid) {
+        List<Role> rolesList = getUserAllRoles(uid);
+        List<Department> requestDepartmentList = new ArrayList<>();
+        for (Role role : rolesList) {
+            Department department = departmentDao.findById(role.getDid()).orElse(null);
+            requestDepartmentList.add(department);
+        }
+        return removeDuplicate(requestDepartmentList);
+    }
+
 
 }

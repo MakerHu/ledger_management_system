@@ -4,8 +4,14 @@ spring:
     username: root
     password: mysql123456
     url: jdbc:mysql://182.92.115.193:3306/lms?useUnicode=true&characterEncoding=utf-8&allowMultiQueries=true&useSSL=false&serverTimezone=GMT%2b8
+  jpa:
+    hibernate:
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
 
 server:
   tomcat:
     max-connections: 200
   port: 8081
+
+

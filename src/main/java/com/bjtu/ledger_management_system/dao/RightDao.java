@@ -7,4 +7,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface RightDao extends JpaRepository<Right,Long>{
     Right findByRightname(String name);
+    Right findByRightid(long rightid);
 }

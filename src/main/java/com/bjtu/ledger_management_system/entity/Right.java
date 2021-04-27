@@ -3,7 +3,7 @@ package com.bjtu.ledger_management_system.entity;
 import javax.persistence.*;
 import java.util.Date;
 
-@Table(name = "right")
+@Table(name = "rights")
 @Entity
 
 public class Right {
