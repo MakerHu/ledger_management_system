@@ -31,4 +31,6 @@ public interface UserService {
     Page<User> getAllUsers(int pageNum, int pageSize);
     List<Role> getRolesInDepartment(String did, long uid);
     List<Department> getUserDepartments (long uid);
+
+    boolean isNewUser(long uid);    //判断用户是否拥有角色进而确定是否为新用户
 }

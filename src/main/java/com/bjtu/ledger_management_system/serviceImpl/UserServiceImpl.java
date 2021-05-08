@@ -287,5 +287,19 @@ public class UserServiceImpl implements UserService {
         return removeDuplicate(requestDepartmentList);
     }
 
+    /**
+     * 判断一个用户是否为新用户
+     * @param uid
+     * @return
+     */
+    @Override
+    public boolean isNewUser(long uid) {
+        if (usersRolesDao.findByUid(uid).size() == 0){
+            return true;
+        }else{
+            return false;
+        }
+    }
+
 
 }

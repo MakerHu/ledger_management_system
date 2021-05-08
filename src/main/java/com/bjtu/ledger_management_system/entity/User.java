@@ -20,6 +20,8 @@ public class User {
 
     private Date birthday;
 
+    private String lastdid;
+
     public long getUid() {
         return uid;
     }
@@ -66,5 +68,13 @@ public class User {
 
     public void setBirthday(Date birthday) {
         this.birthday = birthday;
+    }
+
+    public String getLastdid() {
+        return lastdid;
+    }
+
+    public void setLastdid(String lastdid) {
+        this.lastdid = lastdid;
     }
 }
