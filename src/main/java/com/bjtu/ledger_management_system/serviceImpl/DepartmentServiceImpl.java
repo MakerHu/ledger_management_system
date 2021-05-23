@@ -1,6 +1,7 @@
 package com.bjtu.ledger_management_system.serviceImpl;
 
 import com.bjtu.ledger_management_system.dao.DepartmentDao;
+import com.bjtu.ledger_management_system.dao.LogDao;
 import com.bjtu.ledger_management_system.entity.Department;
 import com.bjtu.ledger_management_system.service.DepartmentService;
 import org.springframework.stereotype.Service;
@@ -12,6 +13,7 @@ import java.util.List;
 public class DepartmentServiceImpl implements DepartmentService {
     @Resource
     private DepartmentDao departmentDao;
+
 
     /**
      * 在数据库中创建部门

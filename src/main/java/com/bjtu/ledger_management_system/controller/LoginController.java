@@ -1,7 +1,10 @@
 package com.bjtu.ledger_management_system.controller;
 
 import com.bjtu.ledger_management_system.common.Result;
+import com.bjtu.ledger_management_system.dao.LogDao;
+import com.bjtu.ledger_management_system.entity.Log;
 import com.bjtu.ledger_management_system.entity.User;
+import com.bjtu.ledger_management_system.service.LogService;
 import com.bjtu.ledger_management_system.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -10,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.util.Date;
 
 @RestController
 //@CrossOrigin
@@ -20,6 +24,9 @@ public class LoginController {
 
     @Resource
     private UserService userService;
+
+    @Resource
+    private LogService logService;
 
     @PostMapping("/login")
     public Result<User> login(@RequestParam String email, @RequestParam String password, HttpServletRequest request){
@@ -50,7 +57,13 @@ public class LoginController {
 
                     //消除返回前端的收能过户数据中的重要信息
                     user.setPassword("");
+
+                    Long uid=new Long("1");
+                    String content="邮箱为"+email+"的用户登录成功";
+                    logService.addLog(uid,content);
+
                     return Result.success(user);
+
                 }else {
                     return Result.error("1", "用户名或密码错误！");
                 }
