@@ -18,7 +18,7 @@ public interface DepartmentDao extends JpaRepository<Department,String>  {
      * 查询所有以did为父部门的下一级子部门
      * 其中length为did的长度+2
      * @param did
-     * @param length
+     * @param subDidLength
      * @return
      */
     @Query(value = "select * from department where did like ?1% and length(did)=?2 ",nativeQuery = true)

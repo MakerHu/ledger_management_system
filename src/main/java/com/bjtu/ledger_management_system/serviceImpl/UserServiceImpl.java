@@ -272,7 +272,7 @@ public class UserServiceImpl implements UserService {
     }
 
     /**
-     * 获取某用户所在的所有部门
+     * 获取某用户所在的所有部门，向下拓展
      * @param uid
      * @return
      */
@@ -281,8 +281,8 @@ public class UserServiceImpl implements UserService {
         List<Role> rolesList = getUserAllRoles(uid);
         List<Department> requestDepartmentList = new ArrayList<>();
         for (Role role : rolesList) {
-            Department department = departmentDao.findById(role.getDid()).orElse(null);
-            requestDepartmentList.add(department);
+            List<Department> departments = departmentDao.findByDidStartingWith(role.getDid());
+            requestDepartmentList.addAll(departments);
         }
         return removeDuplicate(requestDepartmentList);
     }

@@ -1,14 +1,19 @@
 package com.bjtu.ledger_management_system.controller;
 
 import com.bjtu.ledger_management_system.common.Result;
+import com.bjtu.ledger_management_system.controller.dto.UserMsgDTO;
 import com.bjtu.ledger_management_system.dao.LogDao;
 import com.bjtu.ledger_management_system.entity.Department;
 import com.bjtu.ledger_management_system.entity.Log;
+import com.bjtu.ledger_management_system.entity.User;
 import com.bjtu.ledger_management_system.service.DepartmentService;
 import com.bjtu.ledger_management_system.service.LogService;
+import com.bjtu.ledger_management_system.service.UserService;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -21,6 +26,9 @@ public class DepartmentController {
 
     @Resource
     private LogService logService;
+
+    @Resource
+    private UserService userService;
 
     @PostMapping("/create")
     public Result createDepartment(@RequestParam String superDid, @RequestBody Department newDepartment){
@@ -77,5 +85,15 @@ public class DepartmentController {
             logService.addLog(uid,content);
             return Result.error("4","此部门不存在！");
         }
+    }
+
+    @PostMapping("/switch")
+    public Result<UserMsgDTO> switchDepartment(@RequestParam String did, HttpServletRequest request){
+        HttpSession session = request.getSession();
+        UserMsgDTO userMsgDTO = (UserMsgDTO)session.getAttribute("userMsgDTO");
+        userMsgDTO.setLastdid(did);
+        userMsgDTO.setRoleListInLastDid(userService.getRolesInDepartment(did,userMsgDTO.getUid()));
+        userMsgDTO.setRightListInLastDid(userService.getRightsInDepartment(userMsgDTO.getUid(),did));
+        return Result.success(userMsgDTO);
     }
 }

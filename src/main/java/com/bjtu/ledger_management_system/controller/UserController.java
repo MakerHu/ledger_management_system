@@ -171,7 +171,7 @@ public class UserController {
     }
 
     /**
-     * 获取某用户所在的所有部门
+     * 获取某用户所在的所有部门,向下拓展
      * @param uid
      * @return
      */
