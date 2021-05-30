@@ -13,6 +13,8 @@ public interface LogDao extends JpaRepository<Log, Long> {
 
     Page<Log> findAll(Pageable request);
 
+    Page<Log> findByOperatorid(Long operatorId, Pageable request);
+
     Page<Log> findByLogidLikeOrContentContainingOrOperatoridLikeOrOperatornameContaining(Long logid,
                                                                              String content,
                                                                              Long operatorid,

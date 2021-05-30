@@ -49,11 +49,6 @@ public class LoginController {
                         }
                     }
 
-
-                    Long uid=new Long("1");
-                    String content="邮箱为"+email+"的用户登录成功";
-                    logService.addLog(uid,content);
-
                     //消除返回前端的收能过户数据中的重要信息
                     UserMsgDTO userMsgDTO = new UserMsgDTO();
                     userMsgDTO.setUser(user);
@@ -66,6 +61,10 @@ public class LoginController {
                     session.setAttribute("userMsgDTO",userMsgDTO);
                     session.setAttribute("msg","测试session");
                     System.out.println("set session: "+session.getAttribute("msg"));
+
+                    Long uid=user.getUid();
+                    String content="邮箱为"+email+"的用户登录成功";
+                    logService.addLog(uid,content);
                     return Result.success(userMsgDTO);
                 }else {
                     return Result.error("1", "用户名或密码错误！");
@@ -85,11 +84,13 @@ public class LoginController {
      * @param request
      */
     @GetMapping("/test")
-    public void test(HttpServletRequest request){
+    public Result<String> test(HttpServletRequest request){
         System.out.println("test");
         HttpSession session = request.getSession();
         String msg = session.getAttribute("msg").toString();
         System.out.println(msg);
+
+        return Result.success(msg);
     }
 
     @PostMapping("/signout")

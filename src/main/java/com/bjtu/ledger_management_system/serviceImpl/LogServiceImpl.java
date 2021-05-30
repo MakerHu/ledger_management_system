@@ -89,4 +89,11 @@ public class LogServiceImpl implements LogService {
         }
         return logpage;
     }
+
+    @Override
+    public Page<Log> getSpecificLogByOperatorId(Long operatorId, Integer pageNum, Integer pageSize) {
+        Sort sort = Sort.by(Sort.Direction.DESC, "logid");
+        PageRequest request = PageRequest.of(pageNum - 1, pageSize, sort);
+        return logDao.findByOperatorid(operatorId, request);
+    }
 }

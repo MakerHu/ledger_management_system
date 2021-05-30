@@ -32,18 +32,18 @@ public class DepartmentController {
     private UserService userService;
 
     @PostMapping("/create")
-    public Result createDepartment(@RequestParam String superDid, @RequestBody Department newDepartment){
+    public Result createDepartment(HttpServletRequest request,@RequestParam String superDid, @RequestBody Department newDepartment){
         Department existDepartment = departmentService.findByDname(newDepartment.getDname());
+        HttpSession session = request.getSession();
+        UserMsgDTO dto= (UserMsgDTO) session.getAttribute("UserMsgDTO");
+        Long uid = dto.getUid();
         if (existDepartment == null){
             departmentService.createDepartment(superDid,newDepartment);
-
-            Long uid = new Long("1");
             String content="创建了id为"+newDepartment.getDid()+"的部门";
            logService.addLog(uid,content);
 
             return Result.success();
         }else{
-            Long uid = new Long("1");
             String content="创建id为"+newDepartment.getDid()+"的部门失败(部门名已存在！)";
             logService.addLog(uid,content);
 
@@ -52,17 +52,18 @@ public class DepartmentController {
     }
 
     @PostMapping("/modify")
-    public Result modifyDepartment(@RequestBody Department department){
+    public Result modifyDepartment(HttpServletRequest request,@RequestBody Department department){
         Department existDepartment = departmentService.findByDid(department.getDid());
+        HttpSession session = request.getSession();
+        UserMsgDTO dto= (UserMsgDTO) session.getAttribute("UserMsgDTO");
+        Long uid = dto.getUid();
         if (existDepartment != null){
             departmentService.modifyDepartment(department);
 
-            Long uid = new Long("1");
             String content="用户"+"修改了id为"+department.getDid()+"的部门";
             logService.addLog(uid,content);
             return Result.success();
         }else{
-            Long uid = new Long("1");
             String content="用户"+"修改id为"+department.getDid()+"的部门失败(此部门不存在！)";
             logService.addLog(uid,content);
 
@@ -71,17 +72,18 @@ public class DepartmentController {
     }
 
     @GetMapping("/departmentlist")
-    public Result<List<Department>> getDepartmentList(@RequestParam String superDid,@RequestParam boolean isExpand){
+    public Result<List<Department>> getDepartmentList(HttpServletRequest request,@RequestParam String superDid,@RequestParam boolean isExpand){
         Department existDepartment = departmentService.findByDid(superDid);
+        HttpSession session = request.getSession();
+        UserMsgDTO dto= (UserMsgDTO) session.getAttribute("UserMsgDTO");
+        Long uid = dto.getUid();
         if (existDepartment != null){
             List<Department> requestList = departmentService.getDepartmentList(superDid,isExpand);
 
-            Long uid = new Long("1");
             String content="用户"+"获取id为"+superDid+"的部门列表";
             logService.addLog(uid,content);
             return Result.success(requestList);
         }else{
-            Long uid = new Long("1");
             String content="用户"+"获取id为"+superDid+"的部门列表失败（此部门不存在！）";
             logService.addLog(uid,content);
             return Result.error("4","此部门不存在！");

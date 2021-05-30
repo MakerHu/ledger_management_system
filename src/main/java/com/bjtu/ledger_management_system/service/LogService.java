@@ -27,4 +27,15 @@ public interface LogService {
      * @return
      */
     Page<Log> getSpecificLog(String content,Integer pageNum, Integer pageSize);
+
+    /**
+     * 根据模糊查找获取特定的值
+     * @param operatorId
+     * @param pageNum
+     * @param pageSize
+     * @return
+     */
+    Page<Log> getSpecificLogByOperatorId(Long operatorId,Integer pageNum, Integer pageSize);
+
+
 }
