@@ -85,11 +85,13 @@ public class LoginController {
      * @param request
      */
     @GetMapping("/test")
-    public void test(HttpServletRequest request){
+    public Result<String> test(HttpServletRequest request){
         System.out.println("test");
         HttpSession session = request.getSession();
         String msg = session.getAttribute("msg").toString();
         System.out.println(msg);
+
+        return Result.success(msg);
     }
 
     @PostMapping("/signout")

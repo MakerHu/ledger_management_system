@@ -1,6 +1,7 @@
 package com.bjtu.ledger_management_system.controller;
 
 import com.bjtu.ledger_management_system.common.Result;
+import com.bjtu.ledger_management_system.controller.dto.UserMsgDTO;
 import com.bjtu.ledger_management_system.dao.DepartmentDao;
 import com.bjtu.ledger_management_system.entity.Department;
 import com.bjtu.ledger_management_system.entity.Right;
@@ -60,6 +61,23 @@ public class UserController {
             }
 
         }catch (Exception e){
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    /**
+     * 获取用户信息
+     * @param request
+     * @return
+     */
+    @GetMapping("/info")
+    public Result<UserMsgDTO> getInfo(HttpServletRequest request){
+        try {
+            HttpSession session = request.getSession();
+            UserMsgDTO userMsgDTO = (UserMsgDTO) session.getAttribute("userMsgDTO");
+            return Result.success(userMsgDTO);
+        } catch (Exception e){
             e.printStackTrace();
             return null;
         }
