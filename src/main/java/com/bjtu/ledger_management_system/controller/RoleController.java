@@ -2,6 +2,7 @@ package com.bjtu.ledger_management_system.controller;
 
 
 import com.bjtu.ledger_management_system.common.Result;
+import com.bjtu.ledger_management_system.controller.dto.UserMsgDTO;
 import com.bjtu.ledger_management_system.entity.Right;
 import com.bjtu.ledger_management_system.entity.Role;
 import com.bjtu.ledger_management_system.service.LogService;
@@ -11,6 +12,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.util.List;
 
 @RestController
@@ -35,16 +38,18 @@ public class RoleController {
     public Result<Page<Role>> getAllDepartmentRoles(@RequestParam String did,
                                                     @RequestParam boolean isExpand,
                                                     @RequestParam Integer pageNum,
-                                                    @RequestParam Integer pageSize) {
+                                                    @RequestParam Integer pageSize,
+                                                    HttpServletRequest request) {
         Page<Role> pagerole=rightService.getAllDepartRoles(did, isExpand, pageNum, pageSize);
+        HttpSession session = request.getSession();
+        UserMsgDTO dto= (UserMsgDTO) session.getAttribute("UserMsgDTO");
+        Long uid = dto.getUid();
         if(pagerole==null){
-            Long uid=new Long("1");
             String content="查看部门下的角色失败（该部门不存在）";
             logService.addLog(uid,content);
             return Result.error("5003","该部门不存在");
         }
         else {
-            Long uid=new Long("1");
             String content="查看了部门"+did+"的角色";
             logService.addLog(uid,content);
             return Result.success(pagerole);
@@ -58,17 +63,18 @@ public class RoleController {
      * @return
      */
     @RequestMapping("/create")
-    public Result<Role> createRoleInDepart(@RequestBody CreateRoleInDepartDTO dto) {
+    public Result<Role> createRoleInDepart(@RequestBody CreateRoleInDepartDTO dto,HttpServletRequest request) {
 
         Role role = dto.role;
         List<Right> rightList = dto.rightList;
+        HttpSession session = request.getSession();
+        UserMsgDTO userMsgDTO= (UserMsgDTO) session.getAttribute("UserMsgDTO");
+        Long uid = userMsgDTO.getUid();
         if (rightService.createRoleInDepart(role, rightList)) {
-            Long uid=new Long("1");
             String content="在部门"+role.getDid()+"创建了角色"+role.getRoleid();
             logService.addLog(uid,content);
             return Result.success();
         } else {
-            Long uid=new Long("1");
             String content="创建角色失败（该角色在该部门已存在）";
             logService.addLog(uid,content);
             return Result.error("5001", "该角色在该部门已存在");
@@ -82,16 +88,17 @@ public class RoleController {
      * @return
      */
     @PostMapping("/modify")
-    public Result modifyRoleInDepart(@RequestBody CreateRoleInDepartDTO dto) {
+    public Result modifyRoleInDepart(@RequestBody CreateRoleInDepartDTO dto,HttpServletRequest request) {
         Role role = dto.role;
         List<Right> rightList = dto.rightList;
+        HttpSession session = request.getSession();
+        UserMsgDTO userMsgDTO= (UserMsgDTO) session.getAttribute("UserMsgDTO");
+        Long uid = userMsgDTO.getUid();
         if (rightService.modifyRoleInDepart(role, rightList)) {
-            Long uid=new Long("1");
             String content="在部门"+role.getDid()+"修改了角色"+role.getRoleid();
             logService.addLog(uid,content);
             return Result.success();
         } else {
-            Long uid=new Long("1");
             String content="修改角色失败（该角色或该部门不存在）";
             logService.addLog(uid,content);
             return Result.error("5002","该角色或该部门不存在");
@@ -105,9 +112,11 @@ public class RoleController {
      * @return
      */
     @PostMapping("/distribute")
-    public Result modifyOrAllotUserOneRole(@RequestParam(name="uid") Long uid, @RequestParam("roleidList") List<Long> roleidList) {
+    public Result modifyOrAllotUserOneRole(HttpServletRequest request,@RequestParam(name="uid") Long uid, @RequestParam("roleidList") List<Long> roleidList) {
         rightService.modifyOrAllotUserOneRole(uid, roleidList);
-        Long userid=new Long("1");
+        HttpSession session = request.getSession();
+        UserMsgDTO userMsgDTO= (UserMsgDTO) session.getAttribute("UserMsgDTO");
+        Long userid=userMsgDTO.getUid();
         StringBuilder content= new StringBuilder("为用户" + uid + "分配了角色：");
         for(int i=0;i<roleidList.size();i++){
             content.append(roleidList.get(i));

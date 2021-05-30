@@ -36,12 +36,14 @@ public class UserController {
      * @return
      */
     @PostMapping("/modify")
-    public Result<User> modify(@RequestBody User modifyUser){
+    public Result<User> modify(HttpServletRequest request,@RequestBody User modifyUser){
         try{
             User existUser = userService.findByEmail(modifyUser.getEmail());
+            HttpSession session = request.getSession();
+            UserMsgDTO dto= (UserMsgDTO) session.getAttribute("UserMsgDTO");
+            Long uid = dto.getUid();
             if (existUser == null){
                 userService.update(modifyUser);
-                Long uid=new Long("1");
                 String content="修改用户"+modifyUser.getUid()+"的信息成功";
                 logService.addLog(uid,content);
                 return Result.success();
@@ -49,12 +51,10 @@ public class UserController {
 
                 if(existUser.getUid() == modifyUser.getUid()){
                     userService.update(modifyUser);
-                    Long uid=new Long("1");
                     String content="修改用户"+modifyUser.getUid()+"的信息成功";
                     logService.addLog(uid,content);
                     return Result.success();
                 }
-                Long uid=new Long("1");
                 String content="修改用户"+modifyUser.getUid()+"的信息失败（邮箱重复！）";
                 logService.addLog(uid,content);
                 return Result.error("2", "邮箱重复！");
@@ -112,7 +112,8 @@ public class UserController {
             if(userService.listConvertToPage(userList,pageNum,pageSize)==null){
                 return Result.error("5002", "当前pageNum无数据");
             }
-            Long uid=new Long("1");
+            UserMsgDTO dto= (UserMsgDTO) session.getAttribute("UserMsgDTO");
+            Long uid = dto.getUid();
             String content="查看了部门"+did+"下的用户";
             logService.addLog(uid,content);
             return Result.success(userService.listConvertToPage(userList,pageNum,pageSize));
@@ -130,12 +131,14 @@ public class UserController {
      * @return
      */
     @GetMapping("/allusers")
-    public Result<Page<User>> getAllUsers(@RequestParam Integer pageNum, @RequestParam Integer pageSize){
+    public Result<Page<User>> getAllUsers(HttpServletRequest request,@RequestParam Integer pageNum, @RequestParam Integer pageSize){
         try{
+            HttpSession session = request.getSession();
+            UserMsgDTO dto= (UserMsgDTO) session.getAttribute("UserMsgDTO");
+            Long uid = dto.getUid();
             if( pageNum <= 0){
                 return Result.error("5003", "pageNum必须大于0");
             }
-            Long uid=new Long("1");
             String content="查看了系统下的的所有用户";
             logService.addLog(uid,content);
             return Result.success(userService.getAllUsers(pageNum,pageSize));
@@ -152,10 +155,12 @@ public class UserController {
      * @return
      */
     @GetMapping("/allroles")
-    public Result<List<Role>> getAllUsers(@RequestParam long uid){
+    public Result<List<Role>> getAllUsers(HttpServletRequest request,@RequestParam long uid){
         try{
 
-            Long userid=new Long("1");
+            HttpSession session = request.getSession();
+            UserMsgDTO dto= (UserMsgDTO) session.getAttribute("UserMsgDTO");
+            Long userid= dto.getUid();
             String content="查看了用户"+uid+"的所有角色";
             logService.addLog(userid,content);
             return Result.success(userService.getUserAllRoles(uid));
@@ -174,10 +179,12 @@ public class UserController {
      * @return
      */
     @GetMapping("/roles_in_department")
-    public Result<List<Role>> getRolesInDepartment(@RequestParam String did, @RequestParam long uid){
+    public Result<List<Role>> getRolesInDepartment(HttpServletRequest request,@RequestParam String did, @RequestParam long uid){
         try{
 
-            Long userid=new Long("1");
+            HttpSession session = request.getSession();
+            UserMsgDTO dto= (UserMsgDTO) session.getAttribute("UserMsgDTO");
+            Long userid= dto.getUid();
             String content="查看了用户"+uid+"在部门"+did+"下的角色";
             logService.addLog(userid,content);
             return Result.success(userService.getRolesInDepartment(did,uid));
@@ -194,10 +201,12 @@ public class UserController {
      * @return
      */
     @GetMapping("/userdepartments")
-    public Result<List<Department>> getUserDepartments(@RequestParam long uid){
+    public Result<List<Department>> getUserDepartments(HttpServletRequest request,@RequestParam long uid){
         try{
 
-            Long userid=new Long("1");
+            HttpSession session = request.getSession();
+            UserMsgDTO dto= (UserMsgDTO) session.getAttribute("UserMsgDTO");
+            Long userid= dto.getUid();
             String content="查看了用户"+uid+"所在的所有部门";
             logService.addLog(userid,content);
             return Result.success(userService.getUserDepartments(uid));
@@ -215,10 +224,12 @@ public class UserController {
      * @return
      */
     @GetMapping("/rights_in_department")
-    public Result<List<Right>> getRightsInDepartments(@RequestParam long uid,@RequestParam String did){
+    public Result<List<Right>> getRightsInDepartments(HttpServletRequest request,@RequestParam long uid,@RequestParam String did){
         try{
 
-            Long userid=new Long("1");
+            HttpSession session = request.getSession();
+            UserMsgDTO dto= (UserMsgDTO) session.getAttribute("UserMsgDTO");
+            Long userid= dto.getUid();
             String content="查看了用户"+uid+"在部门"+did+"下的所有权限";
             logService.addLog(userid,content);
             return Result.success(userService.getRightsInDepartment(uid,did));
