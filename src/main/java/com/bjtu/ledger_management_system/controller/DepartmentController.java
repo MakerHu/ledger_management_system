@@ -9,6 +9,7 @@ import com.bjtu.ledger_management_system.entity.User;
 import com.bjtu.ledger_management_system.service.DepartmentService;
 import com.bjtu.ledger_management_system.service.LogService;
 import com.bjtu.ledger_management_system.service.UserService;
+import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -94,6 +95,20 @@ public class DepartmentController {
         userMsgDTO.setLastdid(did);
         userMsgDTO.setRoleListInLastDid(userService.getRolesInDepartment(did,userMsgDTO.getUid()));
         userMsgDTO.setRightListInLastDid(userService.getRightsInDepartment(userMsgDTO.getUid(),did));
+        session.setAttribute("userMsgDTO",userMsgDTO);
         return Result.success(userMsgDTO);
+    }
+
+    @GetMapping("/alldepartments")
+    public Result<Page<Department>> getAllDepartments(@RequestParam int pageNum, @RequestParam int pageSize){
+        try{
+            if( pageNum <= 0){
+                return Result.error("5003", "pageNum必须大于0");
+            }
+            return Result.success(departmentService.getDepartmentListPage(pageNum,pageSize));
+        }catch (Exception e){
+            e.printStackTrace();
+            return null;
+        }
     }
 }

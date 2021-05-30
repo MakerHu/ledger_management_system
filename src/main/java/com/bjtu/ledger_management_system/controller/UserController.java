@@ -158,7 +158,6 @@ public class UserController {
     @GetMapping("/roles_in_department")
     public Result<List<Role>> getRolesInDepartment(@RequestParam String did, @RequestParam long uid){
         try{
-
             Long userid=new Long("1");
             String content="查看了用户"+uid+"在部门"+did+"下的角色";
             logService.addLog(userid,content);

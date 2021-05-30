@@ -1,6 +1,9 @@
 package com.bjtu.ledger_management_system.dao;
 
 import com.bjtu.ledger_management_system.entity.Department;
+import com.bjtu.ledger_management_system.entity.User;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -35,5 +38,8 @@ public interface DepartmentDao extends JpaRepository<Department,String>  {
     List<Department> findTotalSubDepartment(String did, int superDidLength);
     List<Department> findByDmanager(long manager);
     List<Department> findByCreatetime(Date createtime);
+
+    @Query(value = "select * from department",nativeQuery = true)
+    Page<Department> selectAllDepartment(Pageable pageable);
 
 }

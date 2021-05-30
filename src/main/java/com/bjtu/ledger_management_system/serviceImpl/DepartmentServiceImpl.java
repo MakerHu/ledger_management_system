@@ -3,7 +3,10 @@ package com.bjtu.ledger_management_system.serviceImpl;
 import com.bjtu.ledger_management_system.dao.DepartmentDao;
 import com.bjtu.ledger_management_system.dao.LogDao;
 import com.bjtu.ledger_management_system.entity.Department;
+import com.bjtu.ledger_management_system.entity.User;
 import com.bjtu.ledger_management_system.service.DepartmentService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -52,6 +55,17 @@ public class DepartmentServiceImpl implements DepartmentService {
         }else{
             return departmentDao.findNextLevelDepartment(superDid,superDid.length()+2);
         }
+    }
+
+    /**
+     * 获取所有部门列表（分页）
+     * @return
+     */
+    @Override
+    public Page<Department> getDepartmentListPage(int pageNum, int pageSize) {
+        PageRequest pageable = PageRequest.of(pageNum-1,pageSize);
+        Page<Department> allDepartmentPage = departmentDao.selectAllDepartment(pageable);
+        return allDepartmentPage;
     }
 
     @Override
