@@ -3,8 +3,6 @@ package com.bjtu.ledger_management_system.service;
 import com.bjtu.ledger_management_system.entity.Log;
 import org.springframework.data.domain.Page;
 
-import java.util.List;
-
 public interface LogService {
     /**
      * 添加日志
@@ -37,7 +35,7 @@ public interface LogService {
      * @param pageSize
      * @return
      */
-    List<Log> getSpecificLogByOperatorId(Long operatorId, Integer pageNum, Integer pageSize);
+    Page<Log> getSpecificLogByOperatorId(Long operatorId,Integer pageNum, Integer pageSize);
 
 
 }

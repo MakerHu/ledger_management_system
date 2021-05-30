@@ -8,7 +8,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
-import java.util.List;
 
 @RestController
 @RequestMapping("/log")
@@ -36,7 +35,7 @@ public class LogController {
 
     //根据操作员搜索日志
     @PostMapping(path = "/{uid}")
-    public Result<List<Log>> getSpecificLogsByOperatorId(@PathVariable Long uid, @RequestParam Integer pageNum, @RequestParam Integer pageSize){
+    public Result<Page<Log>> getSpecificLogsByOperatorId(@PathVariable Long uid,@RequestParam Integer pageNum,@RequestParam Integer pageSize){
         return Result.success(logService.getSpecificLogByOperatorId(uid, pageNum, pageSize));
     }
 }
