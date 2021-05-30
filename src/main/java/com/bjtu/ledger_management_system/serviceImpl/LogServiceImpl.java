@@ -3,7 +3,6 @@ package com.bjtu.ledger_management_system.serviceImpl;
 import com.bjtu.ledger_management_system.dao.LogDao;
 import com.bjtu.ledger_management_system.dao.UserDao;
 import com.bjtu.ledger_management_system.entity.Log;
-import com.bjtu.ledger_management_system.entity.Role;
 import com.bjtu.ledger_management_system.entity.User;
 import com.bjtu.ledger_management_system.service.LogService;
 import org.springframework.data.domain.Page;
@@ -13,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.Date;
+import java.util.List;
 import java.util.regex.Pattern;
 
 @Service
@@ -88,5 +88,12 @@ public class LogServiceImpl implements LogService {
             );
         }
         return logpage;
+    }
+
+    @Override
+    public List<Log> getSpecificLogByOperatorId(Long operatorId, Integer pageNum, Integer pageSize) {
+        Sort sort = Sort.by(Sort.Direction.DESC, "logid");
+        PageRequest request = PageRequest.of(pageNum - 1, pageSize, sort);
+        return logDao.findByOperatorid(operatorId, request);
     }
 }

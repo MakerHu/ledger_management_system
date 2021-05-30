@@ -8,6 +8,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 @RestController
 @RequestMapping("/log")
@@ -31,5 +32,11 @@ public class LogController {
         String contents="以字段“"+content+"”模糊查找了日志";
         logService.addLog(uid,contents);
         return Result.success(logService.getSpecificLog(content,pageNum,pageSize));
+    }
+
+    //根据操作员搜索日志
+    @PostMapping(path = "/{uid}")
+    public Result<List<Log>> getSpecificLogsByOperatorId(@PathVariable Long uid, @RequestParam Integer pageNum, @RequestParam Integer pageSize){
+        return Result.success(logService.getSpecificLogByOperatorId(uid, pageNum, pageSize));
     }
 }
