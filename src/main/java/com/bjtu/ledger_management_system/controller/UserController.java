@@ -40,7 +40,7 @@ public class UserController {
         try{
             User existUser = userService.findByEmail(modifyUser.getEmail());
             HttpSession session = request.getSession();
-            UserMsgDTO dto= (UserMsgDTO) session.getAttribute("UserMsgDTO");
+            UserMsgDTO dto= (UserMsgDTO) session.getAttribute("userMsgDTO");
             Long uid = dto.getUid();
             if (existUser == null){
                 userService.update(modifyUser);
@@ -97,8 +97,6 @@ public class UserController {
                                           @RequestParam Integer pageNum, @RequestParam Integer pageSize, HttpServletRequest request){
 
         HttpSession session = request.getSession();
-        System.out.println("testsession: "+session.getAttribute("msg"));
-        System.out.println("testsession2: "+session.getAttribute("user"));
         try{
             if (!departmentDao.findById(did).isPresent()) {
                 return Result.error("5001", "无此部门");
@@ -112,7 +110,7 @@ public class UserController {
             if(userService.listConvertToPage(userList,pageNum,pageSize)==null){
                 return Result.error("5002", "当前pageNum无数据");
             }
-            UserMsgDTO dto= (UserMsgDTO) session.getAttribute("UserMsgDTO");
+            UserMsgDTO dto= (UserMsgDTO) session.getAttribute("userMsgDTO");
             Long uid = dto.getUid();
             String content="查看了部门"+did+"下的用户";
             logService.addLog(uid,content);
@@ -134,7 +132,7 @@ public class UserController {
     public Result<Page<User>> getAllUsers(HttpServletRequest request,@RequestParam Integer pageNum, @RequestParam Integer pageSize){
         try{
             HttpSession session = request.getSession();
-            UserMsgDTO dto= (UserMsgDTO) session.getAttribute("UserMsgDTO");
+            UserMsgDTO dto= (UserMsgDTO) session.getAttribute("userMsgDTO");
             Long uid = dto.getUid();
             if( pageNum <= 0){
                 return Result.error("5003", "pageNum必须大于0");
@@ -159,7 +157,7 @@ public class UserController {
         try{
 
             HttpSession session = request.getSession();
-            UserMsgDTO dto= (UserMsgDTO) session.getAttribute("UserMsgDTO");
+            UserMsgDTO dto= (UserMsgDTO) session.getAttribute("userMsgDTO");
             Long userid= dto.getUid();
             String content="查看了用户"+uid+"的所有角色";
             logService.addLog(userid,content);
@@ -183,7 +181,7 @@ public class UserController {
         try{
 
             HttpSession session = request.getSession();
-            UserMsgDTO dto= (UserMsgDTO) session.getAttribute("UserMsgDTO");
+            UserMsgDTO dto= (UserMsgDTO) session.getAttribute("userMsgDTO");
             Long userid= dto.getUid();
             String content="查看了用户"+uid+"在部门"+did+"下的角色";
             logService.addLog(userid,content);
@@ -205,7 +203,7 @@ public class UserController {
         try{
 
             HttpSession session = request.getSession();
-            UserMsgDTO dto= (UserMsgDTO) session.getAttribute("UserMsgDTO");
+            UserMsgDTO dto= (UserMsgDTO) session.getAttribute("userMsgDTO");
             Long userid= dto.getUid();
             String content="查看了用户"+uid+"所在的所有部门";
             logService.addLog(userid,content);
@@ -228,7 +226,7 @@ public class UserController {
         try{
 
             HttpSession session = request.getSession();
-            UserMsgDTO dto= (UserMsgDTO) session.getAttribute("UserMsgDTO");
+            UserMsgDTO dto= (UserMsgDTO) session.getAttribute("userMsgDTO");
             Long userid= dto.getUid();
             String content="查看了用户"+uid+"在部门"+did+"下的所有权限";
             logService.addLog(userid,content);

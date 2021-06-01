@@ -30,11 +30,13 @@ public class RegisterController {
     @PostMapping("/single")
     public Result<User> createSingleUser(HttpServletRequest request,@RequestBody User newUser){
         try{
+            HttpSession session = request.getSession();
+            UserMsgDTO dto= (UserMsgDTO) session.getAttribute("userMsgDTO");
             User existUser = userService.findByEmail(newUser.getEmail());
             if (existUser == null){
                 newUser.setPassword(encoding.encode(newUser.getPassword()));
                 userService.add(newUser);
-                Long uid=new Long("1");
+                Long uid = dto.getUid();
                 String content="创建了账户"+newUser.getEmail();
                 logService.addLog(uid,content);
                 return Result.success();
@@ -55,7 +57,7 @@ public class RegisterController {
     public Result<List<User>> createBatchUser(HttpServletRequest request,@RequestBody List<User> newUserList){
         List<User> errorList = new ArrayList<>();
         HttpSession session = request.getSession();
-        UserMsgDTO dto= (UserMsgDTO) session.getAttribute("UserMsgDTO");
+        UserMsgDTO dto= (UserMsgDTO) session.getAttribute("userMsgDTO");
         Long uid = dto.getUid();
         for (User newUser : newUserList) {
             User existUser = userService.findByEmail(newUser.getEmail());

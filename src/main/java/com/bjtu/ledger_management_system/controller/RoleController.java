@@ -42,7 +42,7 @@ public class RoleController {
                                                     HttpServletRequest request) {
         Page<Role> pagerole=rightService.getAllDepartRoles(did, isExpand, pageNum, pageSize);
         HttpSession session = request.getSession();
-        UserMsgDTO dto= (UserMsgDTO) session.getAttribute("UserMsgDTO");
+        UserMsgDTO dto= (UserMsgDTO) session.getAttribute("userMsgDTO");
         Long uid = dto.getUid();
         if(pagerole==null){
             String content="查看部门下的角色失败（该部门不存在）";
@@ -68,7 +68,7 @@ public class RoleController {
         Role role = dto.role;
         List<Right> rightList = dto.rightList;
         HttpSession session = request.getSession();
-        UserMsgDTO userMsgDTO= (UserMsgDTO) session.getAttribute("UserMsgDTO");
+        UserMsgDTO userMsgDTO= (UserMsgDTO) session.getAttribute("userMsgDTO");
         Long uid = userMsgDTO.getUid();
         if (rightService.createRoleInDepart(role, rightList)) {
             String content="在部门"+role.getDid()+"创建了角色"+role.getRoleid();
@@ -92,7 +92,7 @@ public class RoleController {
         Role role = dto.role;
         List<Right> rightList = dto.rightList;
         HttpSession session = request.getSession();
-        UserMsgDTO userMsgDTO= (UserMsgDTO) session.getAttribute("UserMsgDTO");
+        UserMsgDTO userMsgDTO= (UserMsgDTO) session.getAttribute("userMsgDTO");
         Long uid = userMsgDTO.getUid();
         if (rightService.modifyRoleInDepart(role, rightList)) {
             String content="在部门"+role.getDid()+"修改了角色"+role.getRoleid();
@@ -115,7 +115,7 @@ public class RoleController {
     public Result modifyOrAllotUserOneRole(HttpServletRequest request,@RequestParam(name="uid") Long uid, @RequestParam("roleidList") List<Long> roleidList) {
         rightService.modifyOrAllotUserOneRole(uid, roleidList);
         HttpSession session = request.getSession();
-        UserMsgDTO userMsgDTO= (UserMsgDTO) session.getAttribute("UserMsgDTO");
+        UserMsgDTO userMsgDTO= (UserMsgDTO) session.getAttribute("userMsgDTO");
         Long userid=userMsgDTO.getUid();
         StringBuilder content= new StringBuilder("为用户" + uid + "分配了角色：");
         for(int i=0;i<roleidList.size();i++){

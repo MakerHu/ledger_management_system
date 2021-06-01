@@ -35,7 +35,7 @@ public class DepartmentController {
     public Result createDepartment(HttpServletRequest request,@RequestParam String superDid, @RequestBody Department newDepartment){
         Department existDepartment = departmentService.findByDname(newDepartment.getDname());
         HttpSession session = request.getSession();
-        UserMsgDTO dto= (UserMsgDTO) session.getAttribute("UserMsgDTO");
+        UserMsgDTO dto= (UserMsgDTO) session.getAttribute("userMsgDTO");
         Long uid = dto.getUid();
         if (existDepartment == null){
             departmentService.createDepartment(superDid,newDepartment);
@@ -55,7 +55,7 @@ public class DepartmentController {
     public Result modifyDepartment(HttpServletRequest request,@RequestBody Department department){
         Department existDepartment = departmentService.findByDid(department.getDid());
         HttpSession session = request.getSession();
-        UserMsgDTO dto= (UserMsgDTO) session.getAttribute("UserMsgDTO");
+        UserMsgDTO dto= (UserMsgDTO) session.getAttribute("userMsgDTO");
         Long uid = dto.getUid();
         if (existDepartment != null){
             departmentService.modifyDepartment(department);
@@ -75,7 +75,7 @@ public class DepartmentController {
     public Result<List<Department>> getDepartmentList(HttpServletRequest request,@RequestParam String superDid,@RequestParam boolean isExpand){
         Department existDepartment = departmentService.findByDid(superDid);
         HttpSession session = request.getSession();
-        UserMsgDTO dto= (UserMsgDTO) session.getAttribute("UserMsgDTO");
+        UserMsgDTO dto= (UserMsgDTO) session.getAttribute("userMsgDTO");
         Long uid = dto.getUid();
         if (existDepartment != null){
             List<Department> requestList = departmentService.getDepartmentList(superDid,isExpand);
@@ -98,6 +98,11 @@ public class DepartmentController {
         userMsgDTO.setRoleListInLastDid(userService.getRolesInDepartment(did,userMsgDTO.getUid()));
         userMsgDTO.setRightListInLastDid(userService.getRightsInDepartment(userMsgDTO.getUid(),did));
         session.setAttribute("userMsgDTO",userMsgDTO);
+
+        User user = userService.findById(userMsgDTO.getUid());
+        user.setLastdid(did);
+        userService.update(user);
+
         return Result.success(userMsgDTO);
     }
 
