@@ -38,6 +38,7 @@ public class DepartmentController {
         UserMsgDTO dto= (UserMsgDTO) session.getAttribute("userMsgDTO");
         Long uid = dto.getUid();
         if (existDepartment == null){
+
             departmentService.createDepartment(superDid,newDepartment);
             String content="创建了id为"+newDepartment.getDid()+"的部门";
            logService.addLog(uid,content);
