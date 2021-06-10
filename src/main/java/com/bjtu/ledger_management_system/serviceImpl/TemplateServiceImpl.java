@@ -1,5 +1,6 @@
 package com.bjtu.ledger_management_system.serviceImpl;
 
+import com.bjtu.ledger_management_system.controller.dto.CreateTemplateDTO;
 import com.bjtu.ledger_management_system.controller.dto.TableHeadDTO;
 import com.bjtu.ledger_management_system.dao.TemplateDao;
 import com.bjtu.ledger_management_system.dao.TemplateRelationDao;
@@ -11,6 +12,9 @@ import com.bjtu.ledger_management_system.service.TemplateService;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Queue;
 
 @Service
 public class TemplateServiceImpl implements TemplateService {
@@ -39,6 +43,14 @@ public class TemplateServiceImpl implements TemplateService {
         templateStructureContent.setTempid(tempid);
         templateStructureContent.setStrucid(thisStructId);
 
+//        if(superid != -1){
+//            TemplateRelation templateRelation = new TemplateRelation();
+//            templateRelation.setTempid(tempid);
+//            templateRelation.setSuperid(superid);
+//            templateRelation.setSubid(thisStructId);
+//            templateRelationDao.save(templateRelation);
+            templateStructureContent.setSuperid(superid);
+//        }
 
         if(tableHeadDTO.getLabel()!=null){
             templateStructureContent.setContent(tableHeadDTO.getLabel());
@@ -51,13 +63,7 @@ public class TemplateServiceImpl implements TemplateService {
             }
         }
 
-        if(superid != -1){
-            TemplateRelation templateRelation = new TemplateRelation();
-            templateRelation.setTempid(tempid);
-            templateRelation.setSuperid(superid);
-            templateRelation.setSubid(thisStructId);
-            templateRelationDao.save(templateRelation);
-        }
+
 
     }
 
@@ -66,6 +72,54 @@ public class TemplateServiceImpl implements TemplateService {
         templateDao.save(newTemplate);
         strucid = 0;
         saveTableHead(newTemplate.getTempid(), tableHeadDTO, -1);
+    }
+
+    /**
+     * 获取模板表头及模板基本信息
+     * @param tempid
+     * @return
+     */
+    @Override
+    public CreateTemplateDTO getTemplate(long tempid) {
+        CreateTemplateDTO createTemplateDTO = new CreateTemplateDTO();
+        Template template = findByTempId(tempid);
+        createTemplateDTO.setNewTemplate(template);
+
+        TableHeadDTO tableHeadDTO = new TableHeadDTO();
+        tableHeadDTO.setLabel(template.getTempname());
+        tableHeadDTO.setProp("0");
+
+        List<TemplateStructureContent> tempStructConList = templateStructureContentDao.findByTempid(tempid);
+        Queue<Long> superIdQueue =  new LinkedList<Long>();
+        Queue<TableHeadDTO> tableHeadQueue =  new LinkedList<TableHeadDTO>();
+
+        //向队列中加入根节点0
+        superIdQueue.offer((long)0);
+        tableHeadQueue.offer(tableHeadDTO);
+
+        while(superIdQueue.size() > 0 ){
+            long parentId = superIdQueue.poll();
+            TableHeadDTO superTableHead = tableHeadQueue.poll();
+            for(TemplateStructureContent tsc : tempStructConList){
+                if(tsc.getSuperid() == parentId){
+                    TableHeadDTO subTableHead = new TableHeadDTO();
+                    subTableHead.setLabel(tsc.getContent());
+                    subTableHead.setProp(Long.toString(tsc.getStrucid()));
+                    superTableHead.getChildren().add(subTableHead);
+                    tableHeadQueue.offer(subTableHead); //向队列中添加子节点
+                    superIdQueue.offer(tsc.getStrucid());
+                }
+            }
+        }
+
+        createTemplateDTO.setTableHead(tableHeadDTO);
+
+        return createTemplateDTO;
+    }
+
+    @Override
+    public Template findByTempId(long tempid) {
+        return templateDao.findById(tempid).orElse(null);
     }
 
 

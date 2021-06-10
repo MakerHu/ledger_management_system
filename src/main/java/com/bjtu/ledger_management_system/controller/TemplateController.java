@@ -6,10 +6,7 @@ import com.bjtu.ledger_management_system.controller.dto.UserMsgDTO;
 import com.bjtu.ledger_management_system.entity.Template;
 import com.bjtu.ledger_management_system.service.LogService;
 import com.bjtu.ledger_management_system.service.TemplateService;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -43,4 +40,24 @@ public class TemplateController {
             return null;
         }
     }
+
+    @GetMapping("/gettemplate")
+    public Result<CreateTemplateDTO> getTemplate(HttpServletRequest request, @RequestParam long tempid) {
+        try {
+            HttpSession session = request.getSession();
+            UserMsgDTO userMsgDTO = (UserMsgDTO) session.getAttribute("userMsgDTO");
+
+            CreateTemplateDTO resultTemp = templateService.getTemplate(tempid);
+
+            Long uid = userMsgDTO.getUid();
+            String content = "获取了tempid为"+tempid+"的台账模板";
+            logService.addLog(uid, content);
+            return Result.success(resultTemp);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
 }

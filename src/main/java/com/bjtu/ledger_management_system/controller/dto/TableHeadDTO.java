@@ -1,11 +1,12 @@
 package com.bjtu.ledger_management_system.controller.dto;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class TableHeadDTO {
     private String label;
     private String prop;
-    private List<TableHeadDTO> children;
+    private List<TableHeadDTO> children = new ArrayList<>();
 
     public String getLabel() {
         return label;

@@ -14,6 +14,8 @@ public class TemplateStructureContent {
 
   private String content;
 
+  private long superid;
+
   public long getId() {
     return id;
   }
@@ -44,5 +46,13 @@ public class TemplateStructureContent {
 
   public void setContent(String content) {
     this.content = content;
+  }
+
+  public long getSuperid() {
+    return superid;
+  }
+
+  public void setSuperid(long superid) {
+    this.superid = superid;
   }
 }
