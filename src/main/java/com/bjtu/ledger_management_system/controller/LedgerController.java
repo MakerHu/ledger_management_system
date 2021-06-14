@@ -1,0 +1,120 @@
+package com.bjtu.ledger_management_system.controller;
+
+import com.bjtu.ledger_management_system.common.Result;
+import com.bjtu.ledger_management_system.controller.dto.UserMsgDTO;
+import com.bjtu.ledger_management_system.entity.Ledger;
+import com.bjtu.ledger_management_system.entity.Record;
+import com.bjtu.ledger_management_system.service.LedgerService;
+import com.bjtu.ledger_management_system.service.LogService;
+import org.json.JSONArray;
+import org.json.JSONObject;
+import org.springframework.web.bind.annotation.*;
+
+import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import java.io.PrintWriter;
+import java.util.List;
+
+@RestController
+@RequestMapping("/ledger")
+public class LedgerController {
+    @Resource
+    private LogService logService;
+
+    @Resource
+    private LedgerService ledgerService;
+
+
+    @PostMapping("/createledger")
+    public Result<Ledger> createLedger(HttpServletRequest request, @RequestBody Ledger newLedger){
+        try {
+            HttpSession session = request.getSession();
+            UserMsgDTO userMsgDTO = (UserMsgDTO) session.getAttribute("userMsgDTO");
+
+            newLedger.setCreatorid(userMsgDTO.getUid());
+
+            Ledger resultLedger = ledgerService.createLedger(newLedger);
+
+            Long uid = userMsgDTO.getUid();
+            String content = "创建了台账";
+            logService.addLog(uid, content);
+            return Result.success(resultLedger);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    @PostMapping("/addrecord")
+    public Result addRecord(HttpServletRequest request, @RequestParam long ledgerid, @RequestParam long rowid, @RequestBody List<Record> recordList){
+        try {
+            HttpSession session = request.getSession();
+            UserMsgDTO userMsgDTO = (UserMsgDTO) session.getAttribute("userMsgDTO");
+
+            ledgerService.insertRecord(ledgerid,rowid,recordList);
+
+            Long uid = userMsgDTO.getUid();
+            String content = "添加了台账记录";
+            logService.addLog(uid, content);
+            return Result.success();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    @PostMapping("/delrecord")
+    public Result delRecord(HttpServletRequest request, @RequestParam long ledgerid, @RequestParam long rowid){
+        try {
+            HttpSession session = request.getSession();
+            UserMsgDTO userMsgDTO = (UserMsgDTO) session.getAttribute("userMsgDTO");
+
+            ledgerService.delRecord(ledgerid,rowid);
+
+            Long uid = userMsgDTO.getUid();
+            String content = "删除了台账记录";
+            logService.addLog(uid, content);
+            return Result.success();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    @GetMapping("/getRecordList")
+    public void getRecordList(HttpServletRequest request, HttpServletResponse response, @RequestParam long ledgerid, @RequestParam int pageNum, @RequestParam int pageSize){
+        try {
+            HttpSession session = request.getSession();
+            UserMsgDTO userMsgDTO = (UserMsgDTO) session.getAttribute("userMsgDTO");
+
+            response.setCharacterEncoding("UTF-8");
+            response.setContentType("application/json; charset=utf-8");
+            PrintWriter out = null;
+
+            JSONArray resultList = ledgerService.getRecordListByPage(ledgerid,pageNum,pageSize);
+            JSONObject data = new JSONObject();
+            data.put("content",resultList);
+
+            JSONObject res = new JSONObject();
+            res.put("code", "0");
+            res.put("msg", "成功！");
+            res.put("data",data);
+
+            out = response.getWriter();
+            out.append(res.toString());
+
+            Long uid = userMsgDTO.getUid();
+            String content = "查看了台账记录";
+            logService.addLog(uid, content);
+            System.out.println(resultList.toString());
+//            return Result.success();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+
+}

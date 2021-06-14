@@ -51,6 +51,15 @@ public class TemplateServiceImpl implements TemplateService {
 //            templateRelationDao.save(templateRelation);
             templateStructureContent.setSuperid(superid);
 //        }
+        if(superid == -1){
+            TemplateStructureContent templateStructureContent2 = new TemplateStructureContent();
+            templateStructureContent2.setTempid(tempid);
+            templateStructureContent2.setStrucid(strucid);
+            templateStructureContent2.setContent("序号");
+            templateStructureContent2.setSuperid(0);
+            templateStructureContentDao.save(templateStructureContent2);
+            strucid++;
+        }
 
         if(tableHeadDTO.getLabel()!=null){
             templateStructureContent.setContent(tableHeadDTO.getLabel());
