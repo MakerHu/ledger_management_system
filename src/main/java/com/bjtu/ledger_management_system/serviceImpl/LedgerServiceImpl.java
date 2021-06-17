@@ -7,6 +7,8 @@ import com.bjtu.ledger_management_system.entity.Record;
 import com.bjtu.ledger_management_system.service.LedgerService;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -105,5 +107,12 @@ public class LedgerServiceImpl implements LedgerService {
             lineArray.put(lineObj);
         }
         return lineArray;
+    }
+
+    @Override
+    public Page<Ledger> getLedgerList(String did, int pageNum, int pageSize) {
+        PageRequest pageable = PageRequest.of(pageNum-1,pageSize);
+        Page<Ledger> ledgerPage = ledgerDao.findByDid(did,pageable);
+        return ledgerPage;
     }
 }

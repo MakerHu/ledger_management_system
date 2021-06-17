@@ -9,6 +9,8 @@ import com.bjtu.ledger_management_system.entity.Template;
 import com.bjtu.ledger_management_system.entity.TemplateRelation;
 import com.bjtu.ledger_management_system.entity.TemplateStructureContent;
 import com.bjtu.ledger_management_system.service.TemplateService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -129,6 +131,13 @@ public class TemplateServiceImpl implements TemplateService {
     @Override
     public Template findByTempId(long tempid) {
         return templateDao.findById(tempid).orElse(null);
+    }
+
+    @Override
+    public Page<Template> getTemplateList(int pageNum, int pageSize) {
+        PageRequest pageable = PageRequest.of(pageNum-1,pageSize);
+        Page<Template> templatePage = templateDao.findAll(pageable);
+        return templatePage;
     }
 
 

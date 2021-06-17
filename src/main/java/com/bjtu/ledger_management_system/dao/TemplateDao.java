@@ -2,6 +2,8 @@ package com.bjtu.ledger_management_system.dao;
 
 
 import com.bjtu.ledger_management_system.entity.Template;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -14,5 +16,5 @@ public interface TemplateDao extends JpaRepository<Template,Long> {
     List<Template> findByDid(String did);
     Template findByTempname(String tempname);
     List<Template> findByCreatetime(Date createtime);
-
+//    Page<Template> getAll(Pageable pageable);
 }

@@ -3,6 +3,7 @@ package com.bjtu.ledger_management_system.service;
 import com.bjtu.ledger_management_system.entity.Ledger;
 import com.bjtu.ledger_management_system.entity.Record;
 import org.json.JSONArray;
+import org.springframework.data.domain.Page;
 
 import java.util.List;
 
@@ -13,4 +14,6 @@ public interface LedgerService {
     void updateRecord(long ledgerid, List<Record> recordList);
 
     JSONArray getRecordListByPage(long ledgerid, int pageNum, int pageSize);
+
+    Page<Ledger> getLedgerList(String did, int pageNum, int pageSize);
 }

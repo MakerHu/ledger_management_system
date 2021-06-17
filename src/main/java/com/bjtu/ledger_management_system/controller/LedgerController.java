@@ -4,10 +4,12 @@ import com.bjtu.ledger_management_system.common.Result;
 import com.bjtu.ledger_management_system.controller.dto.UserMsgDTO;
 import com.bjtu.ledger_management_system.entity.Ledger;
 import com.bjtu.ledger_management_system.entity.Record;
+import com.bjtu.ledger_management_system.entity.Template;
 import com.bjtu.ledger_management_system.service.LedgerService;
 import com.bjtu.ledger_management_system.service.LogService;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -113,6 +115,25 @@ public class LedgerController {
 
         } catch (Exception e) {
             e.printStackTrace();
+        }
+    }
+
+    @GetMapping("/getledgerpage")
+    public Result<Page<Ledger>> getLedgerPage(HttpServletRequest request, @RequestParam int pageNum, @RequestParam int pageSize) {
+        try {
+            HttpSession session = request.getSession();
+            UserMsgDTO userMsgDTO = (UserMsgDTO) session.getAttribute("userMsgDTO");
+
+            Page<Ledger> ledgerPage = ledgerService.getLedgerList(userMsgDTO.getLastdid(), pageNum, pageSize);
+
+            Long uid = userMsgDTO.getUid();
+            String content = "获取了部门"+userMsgDTO.getLastdid()+"的台账列表";
+            logService.addLog(uid, content);
+            return Result.success(ledgerPage);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
         }
     }
 
