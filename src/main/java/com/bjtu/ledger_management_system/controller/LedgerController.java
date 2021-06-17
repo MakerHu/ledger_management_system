@@ -4,6 +4,7 @@ import com.bjtu.ledger_management_system.common.Result;
 import com.bjtu.ledger_management_system.controller.dto.UserMsgDTO;
 import com.bjtu.ledger_management_system.entity.Ledger;
 import com.bjtu.ledger_management_system.entity.Record;
+import com.bjtu.ledger_management_system.entity.Role;
 import com.bjtu.ledger_management_system.entity.Template;
 import com.bjtu.ledger_management_system.service.LedgerService;
 import com.bjtu.ledger_management_system.service.LogService;
@@ -135,6 +136,22 @@ public class LedgerController {
             e.printStackTrace();
             return null;
         }
+    }
+
+    /**
+     * 模糊查找用户
+     * @param request
+     * @param content
+     * @param pageNum
+     * @param pageSize
+     * @return
+     */
+    @GetMapping("/search")
+    public Result<Page<Ledger>> queryLedgers(HttpServletRequest request,
+                                         @RequestParam String content,
+                                         @RequestParam Integer pageNum,
+                                         @RequestParam Integer pageSize){
+        return Result.success(ledgerService.getSpecificLedger(content,pageNum,pageSize));
     }
 
 

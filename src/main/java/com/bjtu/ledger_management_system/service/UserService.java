@@ -1,10 +1,7 @@
 package com.bjtu.ledger_management_system.service;
 
 import com.bjtu.ledger_management_system.common.Result;
-import com.bjtu.ledger_management_system.entity.Department;
-import com.bjtu.ledger_management_system.entity.Right;
-import com.bjtu.ledger_management_system.entity.Role;
-import com.bjtu.ledger_management_system.entity.User;
+import com.bjtu.ledger_management_system.entity.*;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -33,4 +30,13 @@ public interface UserService {
     List<Department> getUserDepartments (long uid);
 
     boolean isNewUser(long uid);    //判断用户是否拥有角色进而确定是否为新用户
+
+    /**
+     * 模糊查找用户
+     * @param content
+     * @param pageNum
+     * @param pageSize
+     * @return
+     */
+    Page<User> getSpecificUser(String content, Integer pageNum, Integer pageSize);
 }

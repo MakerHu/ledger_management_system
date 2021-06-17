@@ -42,4 +42,19 @@ public interface DepartmentDao extends JpaRepository<Department,String>  {
     @Query(value = "select * from department",nativeQuery = true)
     Page<Department> selectAllDepartment(Pageable pageable);
 
+    Page<Department> findByDidContainingOrDnameContainingOrDmanagerLikeOrDescriptionContainingOrTelContaining(
+            String did,
+            String dname,
+            Long dmanager,
+            String description,
+            String tel,
+            Pageable request);
+
+    Page<Department> findByDidContainingOrDnameContainingOrDescriptionContainingOrTelContaining(
+            String did,
+            String dname,
+            String description,
+            String tel,
+            Pageable request);
+
 }

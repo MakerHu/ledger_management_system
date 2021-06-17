@@ -4,6 +4,7 @@ import com.bjtu.ledger_management_system.common.Result;
 import com.bjtu.ledger_management_system.controller.dto.CreateTemplateDTO;
 import com.bjtu.ledger_management_system.controller.dto.UserMsgDTO;
 import com.bjtu.ledger_management_system.entity.Template;
+import com.bjtu.ledger_management_system.entity.User;
 import com.bjtu.ledger_management_system.service.LogService;
 import com.bjtu.ledger_management_system.service.TemplateService;
 import org.springframework.data.domain.Page;
@@ -78,6 +79,22 @@ public class TemplateController {
             e.printStackTrace();
             return null;
         }
+    }
+
+    /**
+     * 模糊查找台账模板
+     * @param request
+     * @param content
+     * @param pageNum
+     * @param pageSize
+     * @return
+     */
+    @GetMapping("/search")
+    public Result<Page<Template>> queryUsers(HttpServletRequest request,
+                                         @RequestParam String content,
+                                         @RequestParam Integer pageNum,
+                                         @RequestParam Integer pageSize){
+        return Result.success(templateService.getSpecificTemp(content,pageNum,pageSize));
     }
 
 }

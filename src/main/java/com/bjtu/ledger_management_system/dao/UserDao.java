@@ -14,4 +14,29 @@ public interface UserDao extends JpaRepository<User, Long> {
     User findByUid(Long uid);
     User findByEmail(String email);
     Page<User> findByUid(Long uid, Pageable pageable);
+
+    /**
+     * 模糊查找用户
+     * @param uid
+     * @param uname
+     * @param email
+     * @param lastdid
+     * @param request
+     * @return
+     */
+    Page<User> findByUidLikeOrUnameContainingOrEmailContainingOrLastdidContaining(
+            Long uid,
+            String uname,
+            String email,
+            String lastdid,
+            Pageable request
+    );
+
+    Page<User> findByUnameContainingOrGenderOrEmailContainingOrLastdidContaining(
+            String uname,
+            boolean gender,
+            String email,
+            String lastdid,
+            Pageable request
+    );
 }

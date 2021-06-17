@@ -8,15 +8,18 @@ import com.bjtu.ledger_management_system.dao.TemplateStructureContentDao;
 import com.bjtu.ledger_management_system.entity.Template;
 import com.bjtu.ledger_management_system.entity.TemplateRelation;
 import com.bjtu.ledger_management_system.entity.TemplateStructureContent;
+import com.bjtu.ledger_management_system.entity.User;
 import com.bjtu.ledger_management_system.service.TemplateService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
+import java.util.regex.Pattern;
 
 @Service
 public class TemplateServiceImpl implements TemplateService {
@@ -138,6 +141,40 @@ public class TemplateServiceImpl implements TemplateService {
         PageRequest pageable = PageRequest.of(pageNum-1,pageSize);
         Page<Template> templatePage = templateDao.findAll(pageable);
         return templatePage;
+    }
+
+
+    /**
+     * 模糊查找台账模板
+     * @param content
+     * @param pageNum
+     * @param pageSize
+     * @return
+     */
+    @Override
+    public Page<Template> getSpecificTemp(String content, Integer pageNum, Integer pageSize) {
+        Page<Template> temppage = null;
+        Sort sort = Sort.by(Sort.Direction.DESC, "tempid");
+        PageRequest request = PageRequest.of(pageNum - 1, pageSize, sort);
+        Pattern pattern = Pattern.compile("[0-9]*");
+        if(pattern.matcher(content).matches()){
+            temppage = templateDao.findByTempidLikeOrCreatoridLikeOrDidContainingOrTempnameContainingOrDescriptionContaining(
+                    new Long(content),
+                    new Long(content),
+                    content,
+                    content,
+                    content,
+                    request
+            );
+        }else {
+            temppage = templateDao.findByDidContainingOrTempnameContainingOrDescriptionContaining(
+                    content,
+                    content,
+                    content,
+                    request
+            );
+        }
+        return temppage;
     }
 
 

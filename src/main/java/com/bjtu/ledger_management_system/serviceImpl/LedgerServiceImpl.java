@@ -2,6 +2,7 @@ package com.bjtu.ledger_management_system.serviceImpl;
 
 import com.bjtu.ledger_management_system.dao.LedgerDao;
 import com.bjtu.ledger_management_system.dao.RecordDao;
+import com.bjtu.ledger_management_system.entity.Department;
 import com.bjtu.ledger_management_system.entity.Ledger;
 import com.bjtu.ledger_management_system.entity.Record;
 import com.bjtu.ledger_management_system.service.LedgerService;
@@ -9,11 +10,13 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.regex.Pattern;
 
 @Transactional
 @Service
@@ -114,5 +117,40 @@ public class LedgerServiceImpl implements LedgerService {
         PageRequest pageable = PageRequest.of(pageNum-1,pageSize);
         Page<Ledger> ledgerPage = ledgerDao.findByDid(did,pageable);
         return ledgerPage;
+    }
+
+
+    /**
+     * 模糊查询台账
+     * @param content
+     * @param pageNum
+     * @param pageSize
+     * @return
+     */
+    @Override
+    public Page<Ledger> getSpecificLedger(String content, Integer pageNum, Integer pageSize) {
+        Page<Ledger> ledgerpage = null;
+        Sort sort = Sort.by(Sort.Direction.DESC, "ledgerid");
+        PageRequest request = PageRequest.of(pageNum - 1, pageSize, sort);
+        Pattern pattern = Pattern.compile("[0-9]*");
+        if(pattern.matcher(content).matches()){
+            ledgerpage = ledgerDao.findByLedgeridLikeOrLedgernameContainingOrDidContainingOrCreatoridLikeOrTempidLikeOrDescriptionContaining(
+                    new Long(content),
+                    content,
+                    content,
+                    new Long(content),
+                    new Long(content),
+                    content,
+                    request
+            );
+        }else {
+            ledgerpage=ledgerDao.findByLedgernameContainingOrDidContainingOrDescriptionContaining(
+                    content,
+                    content,
+                    content,
+                    request
+            );
+        }
+        return ledgerpage;
     }
 }

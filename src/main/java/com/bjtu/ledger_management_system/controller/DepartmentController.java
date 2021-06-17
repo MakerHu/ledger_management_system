@@ -5,6 +5,7 @@ import com.bjtu.ledger_management_system.controller.dto.UserMsgDTO;
 import com.bjtu.ledger_management_system.dao.LogDao;
 import com.bjtu.ledger_management_system.entity.Department;
 import com.bjtu.ledger_management_system.entity.Log;
+import com.bjtu.ledger_management_system.entity.Role;
 import com.bjtu.ledger_management_system.entity.User;
 import com.bjtu.ledger_management_system.service.DepartmentService;
 import com.bjtu.ledger_management_system.service.LogService;
@@ -118,5 +119,21 @@ public class DepartmentController {
             e.printStackTrace();
             return null;
         }
+    }
+
+    /**
+     * 模糊查找用户
+     * @param request
+     * @param content
+     * @param pageNum
+     * @param pageSize
+     * @return
+     */
+    @GetMapping("/search")
+    public Result<Page<Department>> queryDepartments(HttpServletRequest request,
+                                         @RequestParam String content,
+                                         @RequestParam Integer pageNum,
+                                         @RequestParam Integer pageSize){
+        return Result.success(departmentService.getSpecificDep(content,pageNum,pageSize));
     }
 }

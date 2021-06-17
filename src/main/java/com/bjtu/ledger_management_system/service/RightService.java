@@ -55,5 +55,13 @@ public interface RightService {
      */
     List<Role> getAllDepartRolesList(String did, boolean isExpand);
 
+    /**
+     * 模糊查询角色
+     * @param content
+     * @param pageNum
+     * @param pageSize
+     * @return
+     */
+    Page<Role> getSpecificRole(String content, Integer pageNum, Integer pageSize);
 
 }

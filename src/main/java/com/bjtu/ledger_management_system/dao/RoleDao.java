@@ -19,4 +19,27 @@ public interface RoleDao extends JpaRepository<Role, Long> {
     Page<Role> findByDid(String did, Pageable request);
     Page<Role> findByDidStartingWith(String did, Pageable pageable);
 
+    /**
+     * 模糊查询
+     * @param roleid
+     * @param rolename
+     * @param did
+     * @param description
+     * @param request
+     * @return
+     */
+    Page<Role> findByRoleidLikeOrRolenameContainingOrDidContainingOrDescriptionContaining(
+            Long roleid,
+            String rolename,
+            String did,
+            String description,
+            Pageable request
+    );
+
+    Page<Role> findByRolenameContainingOrDidContainingOrDescriptionContaining(
+            String rolename,
+            String did,
+            String description,
+            Pageable request
+    );
 }

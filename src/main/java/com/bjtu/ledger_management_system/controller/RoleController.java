@@ -5,6 +5,7 @@ import com.bjtu.ledger_management_system.common.Result;
 import com.bjtu.ledger_management_system.controller.dto.UserMsgDTO;
 import com.bjtu.ledger_management_system.entity.Right;
 import com.bjtu.ledger_management_system.entity.Role;
+import com.bjtu.ledger_management_system.entity.User;
 import com.bjtu.ledger_management_system.service.LogService;
 import com.bjtu.ledger_management_system.service.RightService;
 import com.bjtu.ledger_management_system.controller.dto.CreateRoleInDepartDTO;
@@ -126,6 +127,22 @@ public class RoleController {
         }
         logService.addLog(userid, content.toString());
         return Result.success();
+    }
+
+    /**
+     * 模糊查找用户
+     * @param request
+     * @param content
+     * @param pageNum
+     * @param pageSize
+     * @return
+     */
+    @GetMapping("/search")
+    public Result<Page<Role>> queryRoles(HttpServletRequest request,
+                                         @RequestParam String content,
+                                         @RequestParam Integer pageNum,
+                                         @RequestParam Integer pageSize){
+        return Result.success(rightService.getSpecificRole(content,pageNum,pageSize));
     }
 
 }

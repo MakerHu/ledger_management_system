@@ -13,4 +13,35 @@ public interface LedgerDao extends JpaRepository<Ledger, Long> {
     List<Ledger> findByLedgername(String ledgerName);
     Page<Ledger> findByDid(String did, Pageable pageable);
     List<Ledger> findByCreatorid(long creatorId);
+
+
+    /**
+     * 模糊查询台账列表
+     * @param ledgerid
+     * @param ledgername
+     * @param did
+     * @param creatorid
+     * @param tempid
+     * @param description
+     * @param request
+     * @return
+     */
+    Page<Ledger> findByLedgeridLikeOrLedgernameContainingOrDidContainingOrCreatoridLikeOrTempidLikeOrDescriptionContaining(
+            Long ledgerid,
+            String ledgername,
+            String did,
+            Long creatorid,
+            Long tempid,
+            String description,
+            Pageable request
+    );
+
+    Page<Ledger> findByLedgernameContainingOrDidContainingOrDescriptionContaining(
+            String ledgername,
+            String did,
+            String description,
+            Pageable request
+    );
+
+
 }

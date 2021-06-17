@@ -238,4 +238,21 @@ public class UserController {
         }
     }
 
+
+    /**
+     * 模糊查找用户
+     * @param request
+     * @param content
+     * @param pageNum
+     * @param pageSize
+     * @return
+     */
+    @GetMapping("/search")
+    public Result<Page<User>> queryUsers(HttpServletRequest request,
+                                         @RequestParam String content,
+                                         @RequestParam Integer pageNum,
+                                         @RequestParam Integer pageSize){
+        return Result.success(userService.getSpecificUser(content,pageNum,pageSize));
+    }
+
 }
