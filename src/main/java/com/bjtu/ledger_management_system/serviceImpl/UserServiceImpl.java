@@ -230,7 +230,14 @@ public class UserServiceImpl implements UserService {
             requestRightList.addAll(rightsInThisDepartment);
             i+=2;
         }
-        return removeDuplicate(requestRightList);
+        Right allRights = rightDao.findByRightname("allRights");
+
+        if(requestRightList.contains(allRights)){
+            return rightDao.findAll();
+        }else{
+            return removeDuplicate(requestRightList);
+        }
+
     }
 
     /**
