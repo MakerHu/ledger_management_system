@@ -310,29 +310,19 @@ public class UserServiceImpl implements UserService {
     @Override
     public Page<User> getSpecificUser(String content, Integer pageNum, Integer pageSize) {
         Page<User> userpage = null;
-        Sort sort = Sort.by(Sort.Direction.DESC, "uid");
+        Sort sort = Sort.by(Sort.Direction.ASC, "uid");
         PageRequest request = PageRequest.of(pageNum - 1, pageSize, sort);
-        Pattern pattern = Pattern.compile("[0-9]*");
-        if(pattern.matcher(content).matches()){
-            userpage = userDao.findByUidLikeOrUnameContainingOrEmailContainingOrLastdidContaining(
-                    new Long(content),
-                    content,
-                    content,
-                    content,
-                    request
-            );
-        }else {
-            boolean gender;
-            if(content.equals("男")) gender=true;
-            else gender=false;
-            userpage=userDao.findByUnameContainingOrGenderOrEmailContainingOrLastdidContaining(
-                    content,
-                    gender,
-                    content,
-                    content,
-                    request
-            );
+        String str="%"+content+"%";
+        int gender;
+        if(content.equals("男")) {
+            gender=1;
+            userpage=userDao.findUserswithgender(str,str,str,str,gender,request);
         }
+        else if(content.equals("女")) {
+            gender=0;
+            userpage=userDao.findUserswithgender(str,str,str,str,gender,request);
+        }else userpage=userDao.findUserswithoutgender(str,str,str,str,request);
+
         return userpage;
     }
 

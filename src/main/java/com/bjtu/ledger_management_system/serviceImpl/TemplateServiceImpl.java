@@ -154,26 +154,17 @@ public class TemplateServiceImpl implements TemplateService {
     @Override
     public Page<Template> getSpecificTemp(String content, Integer pageNum, Integer pageSize) {
         Page<Template> temppage = null;
-        Sort sort = Sort.by(Sort.Direction.DESC, "tempid");
+        Sort sort = Sort.by(Sort.Direction.ASC, "tempid");
         PageRequest request = PageRequest.of(pageNum - 1, pageSize, sort);
-        Pattern pattern = Pattern.compile("[0-9]*");
-        if(pattern.matcher(content).matches()){
-            temppage = templateDao.findByTempidLikeOrCreatoridLikeOrDidContainingOrTempnameContainingOrDescriptionContaining(
-                    new Long(content),
-                    new Long(content),
-                    content,
-                    content,
-                    content,
-                    request
-            );
-        }else {
-            temppage = templateDao.findByDidContainingOrTempnameContainingOrDescriptionContaining(
-                    content,
-                    content,
-                    content,
-                    request
-            );
-        }
+        String str = "%"+content+"%";
+        temppage=templateDao.findTeplate(
+                str,
+                str,
+                str,
+                str,
+                str,
+                request
+        );
         return temppage;
     }
 
