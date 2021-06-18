@@ -69,7 +69,7 @@ public class LogServiceImpl implements LogService {
     @Override
     public Page<Log> getSpecificLog(String content, Integer pageNum, Integer pageSize) {
         Page<Log> logpage = null;
-        Sort sort = Sort.by(Sort.Direction.ASC, "logid");
+        Sort sort = Sort.by(Sort.Direction.DESC, "logid");
         PageRequest request = PageRequest.of(pageNum - 1, pageSize, sort);
         String str = "%"+content+"%";
         logpage = logDao.findLog(
