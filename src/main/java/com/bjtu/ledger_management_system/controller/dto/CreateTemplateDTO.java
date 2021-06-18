@@ -3,12 +3,13 @@ package com.bjtu.ledger_management_system.controller.dto;
 import com.bjtu.ledger_management_system.entity.Record;
 import com.bjtu.ledger_management_system.entity.Template;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class CreateTemplateDTO {
     private Template newTemplate;
     private TableHeadDTO tableHead;
-    private List<AddRecordEntity> addRecordEntity;
+    private List<AddRecordEntity> addRecordEntity = new ArrayList<>();
 
     public Template getNewTemplate() {
         return newTemplate;

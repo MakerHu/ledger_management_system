@@ -5,6 +5,7 @@ import com.bjtu.ledger_management_system.entity.Right;
 import com.bjtu.ledger_management_system.entity.Role;
 import com.bjtu.ledger_management_system.entity.User;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -15,10 +16,10 @@ public class UserMsgDTO {
     private String email;
     private Date birthday;
     private String lastdid;
-    private List<Role> roleListInLastDid;
-    private List<Role> roleList;
-    private List<Right> rightListInLastDid;
-    private List<Department> departmentList;    //用户所在的所有部门
+    private List<Role> roleListInLastDid = new ArrayList<>();
+    private List<Role> roleList = new ArrayList<>();
+    private List<Right> rightListInLastDid = new ArrayList<>();
+    private List<Department> departmentList = new ArrayList<>();    //用户所在的所有部门
 
     public UserMsgDTO(){
     }
