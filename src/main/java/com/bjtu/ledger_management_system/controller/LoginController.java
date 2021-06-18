@@ -38,7 +38,8 @@ public class LoginController {
                 if (encoding.matches(password,user.getPassword())){
 
                     // 判断用户是否不是新用户，新用户没有部门
-                    if (!userService.isNewUser(user.getUid())){
+                    boolean isNewUser = userService.isNewUser(user.getUid());
+                    if (!isNewUser){
                         String lastdid = user.getLastdid();
                         if (lastdid == null || lastdid.length()==0){    //判断lastdid是否为空，若为空说明用户是在拥有角色后第一次登录
                             // 选择用户的所属的其中一个部门作为本次进入的部门
@@ -52,9 +53,12 @@ public class LoginController {
                     //消除返回前端的收能过户数据中的重要信息
                     UserMsgDTO userMsgDTO = new UserMsgDTO();
                     userMsgDTO.setUser(user);
-                    userMsgDTO.setRoleListInLastDid(userService.getRolesInDepartment(user.getLastdid(),user.getUid()));
-                    userMsgDTO.setRightListInLastDid(userService.getRightsInDepartment(user.getUid(),user.getLastdid()));
-                    userMsgDTO.setDepartmentList(userService.getUserDepartments(user.getUid()));
+                    if(!isNewUser){
+                        userMsgDTO.setRoleListInLastDid(userService.getRolesInDepartment(user.getLastdid(),user.getUid()));
+                        userMsgDTO.setRightListInLastDid(userService.getRightsInDepartment(user.getUid(),user.getLastdid()));
+                        userMsgDTO.setDepartmentList(userService.getUserDepartments(user.getUid()));
+                    }
+
 
                     //设置session值
                     HttpSession session = request.getSession();
