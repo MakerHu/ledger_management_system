@@ -48,7 +48,7 @@ public interface TemplateDao extends JpaRepository<Template,Long> {
 //    );
 
     @Query(value = "select * from template where tempid LIKE ?1 OR creatorid LIKE ?2 OR did LIKE ?3 OR tempname LIKE ?4 OR description LIKE ?5",nativeQuery = true)
-    Page<Template> findTeplate(
+    Page<Template> findTemplate(
             String tempid,
             String creatorid,
             String did,

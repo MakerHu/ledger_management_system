@@ -139,7 +139,7 @@ public class TemplateServiceImpl implements TemplateService {
             rootNodeList.add(tsc2.getSuperid());
         }
         for(AddRecordEntity rc2 : tempRecordEntity){
-            if(!rootNodeList.contains(rc2.getStrucid())){
+            if(!rootNodeList.contains(rc2.getStrucid()) && rc2.getStrucid()!=1){
                 addRecordEntity.add(rc2);
             }
         }
@@ -174,7 +174,7 @@ public class TemplateServiceImpl implements TemplateService {
         Sort sort = Sort.by(Sort.Direction.ASC, "tempid");
         PageRequest request = PageRequest.of(pageNum - 1, pageSize, sort);
         String str = "%"+content+"%";
-        temppage=templateDao.findTeplate(
+        temppage=templateDao.findTemplate(
                 str,
                 str,
                 str,

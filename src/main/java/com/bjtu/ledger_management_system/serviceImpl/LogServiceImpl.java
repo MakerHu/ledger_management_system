@@ -69,24 +69,16 @@ public class LogServiceImpl implements LogService {
     @Override
     public Page<Log> getSpecificLog(String content, Integer pageNum, Integer pageSize) {
         Page<Log> logpage = null;
-        Sort sort = Sort.by(Sort.Direction.DESC, "logid");
+        Sort sort = Sort.by(Sort.Direction.ASC, "logid");
         PageRequest request = PageRequest.of(pageNum - 1, pageSize, sort);
-        Pattern pattern = Pattern.compile("[0-9]*");
-        if(pattern.matcher(content).matches()){
-            logpage = logDao.findByLogidLikeOrContentContainingOrOperatoridLikeOrOperatornameContaining(
-                    new Long(content),
-                    content,
-                    new Long(content),
-                    content,
-                    request
-            );
-        }else {
-            logpage=logDao.findByContentContainingOrOperatornameContaining(
-                    content,
-                    content,
-                    request
-            );
-        }
+        String str = "%"+content+"%";
+        logpage = logDao.findLog(
+                str,
+                str,
+                str,
+                str,
+                request
+        );
         return logpage;
     }
 
