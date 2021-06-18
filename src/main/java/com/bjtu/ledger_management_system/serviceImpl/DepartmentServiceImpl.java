@@ -129,27 +129,17 @@ public class DepartmentServiceImpl implements DepartmentService {
     @Override
     public Page<Department> getSpecificDep(String content, Integer pageNum, Integer pageSize) {
         Page<Department> deppage = null;
-        Sort sort = Sort.by(Sort.Direction.DESC, "did");
+        Sort sort = Sort.by(Sort.Direction.ASC, "did");
         PageRequest request = PageRequest.of(pageNum - 1, pageSize, sort);
-        Pattern pattern = Pattern.compile("[0-9]*");
-        if(pattern.matcher(content).matches()){
-            deppage = departmentDao.findByDidContainingOrDnameContainingOrDmanagerLikeOrDescriptionContainingOrTelContaining(
-                    content,
-                    content,
-                    new Long(content),
-                    content,
-                    content,
-                    request
-            );
-        }else {
-            deppage=departmentDao.findByDidContainingOrDnameContainingOrDescriptionContainingOrTelContaining(
-                    content,
-                    content,
-                    content,
-                    content,
-                    request
-            );
-        }
+        String str = "%"+content+"%";
+        deppage = departmentDao.findDep(
+                str,
+                str,
+                str,
+                str,
+                str,
+                request
+        );
         return deppage;
     }
 

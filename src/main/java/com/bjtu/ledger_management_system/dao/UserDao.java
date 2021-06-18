@@ -5,6 +5,7 @@ import com.bjtu.ledger_management_system.entity.User;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 
@@ -24,19 +25,39 @@ public interface UserDao extends JpaRepository<User, Long> {
      * @param request
      * @return
      */
-    Page<User> findByUidLikeOrUnameContainingOrEmailContainingOrLastdidContaining(
-            Long uid,
+//    Page<User> findByUidLikeOrUnameContainingOrEmailContainingOrLastdidContaining(
+//            Long uid,
+//            String uname,
+//            String email,
+//            String lastdid,
+//            Pageable request
+//    );
+//
+//    Page<User> findByUnameContainingOrGenderOrEmailContainingOrLastdidContaining(
+//            String uname,
+//            boolean gender,
+//            String email,
+//            String lastdid,
+//            Pageable request
+//    );
+
+
+    @Query(value = "select * from user where uname LIKE ?1 OR email LIKE ?2 OR lastdid LIKE ?3 OR uid LIKE ?4 OR gender = ?5",nativeQuery = true)
+    Page<User> findUserswithgender(
             String uname,
             String email,
             String lastdid,
+            String uid,
+            int gender,
             Pageable request
     );
 
-    Page<User> findByUnameContainingOrGenderOrEmailContainingOrLastdidContaining(
+    @Query(value = "select * from user where uname LIKE ?1 OR email LIKE ?2 OR lastdid LIKE ?3 OR uid LIKE ?4",nativeQuery = true)
+    Page<User> findUserswithoutgender(
             String uname,
-            boolean gender,
             String email,
             String lastdid,
+            String uid,
             Pageable request
     );
 }

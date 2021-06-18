@@ -154,27 +154,18 @@ public class LedgerServiceImpl implements LedgerService {
     @Override
     public Page<Ledger> getSpecificLedger(String content, Integer pageNum, Integer pageSize) {
         Page<Ledger> ledgerpage = null;
-        Sort sort = Sort.by(Sort.Direction.DESC, "ledgerid");
+        Sort sort = Sort.by(Sort.Direction.ASC, "ledgerid");
         PageRequest request = PageRequest.of(pageNum - 1, pageSize, sort);
-        Pattern pattern = Pattern.compile("[0-9]*");
-        if(pattern.matcher(content).matches()){
-            ledgerpage = ledgerDao.findByLedgeridLikeOrLedgernameContainingOrDidContainingOrCreatoridLikeOrTempidLikeOrDescriptionContaining(
-                    new Long(content),
-                    content,
-                    content,
-                    new Long(content),
-                    new Long(content),
-                    content,
-                    request
-            );
-        }else {
-            ledgerpage=ledgerDao.findByLedgernameContainingOrDidContainingOrDescriptionContaining(
-                    content,
-                    content,
-                    content,
-                    request
-            );
-        }
+        String str = "%"+content+"%";
+        ledgerpage=ledgerDao.findLedger(
+                str,
+                str,
+                str,
+                str,
+                str,
+                str,
+                request
+        );
         return ledgerpage;
     }
 }

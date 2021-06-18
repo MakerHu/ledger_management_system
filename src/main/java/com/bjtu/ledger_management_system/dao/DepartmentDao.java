@@ -1,6 +1,7 @@
 package com.bjtu.ledger_management_system.dao;
 
 import com.bjtu.ledger_management_system.entity.Department;
+import com.bjtu.ledger_management_system.entity.Ledger;
 import com.bjtu.ledger_management_system.entity.User;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -42,19 +43,24 @@ public interface DepartmentDao extends JpaRepository<Department,String>  {
     @Query(value = "select * from department",nativeQuery = true)
     Page<Department> selectAllDepartment(Pageable pageable);
 
-    Page<Department> findByDidContainingOrDnameContainingOrDmanagerLikeOrDescriptionContainingOrTelContaining(
+    /**
+     * 模糊查询部门
+     * @param did
+     * @param dname
+     * @param dmanager
+     * @param description
+     * @param tel
+     * @param request
+     * @return
+     */
+    @Query(value = "select * from department where did LIKE ?1 OR dname LIKE ?2 OR dmanager LIKE ?3 OR description LIKE ?4 OR tel LIKE ?5",nativeQuery = true)
+    Page<Department> findDep(
             String did,
             String dname,
-            Long dmanager,
+            String dmanager,
             String description,
             String tel,
-            Pageable request);
-
-    Page<Department> findByDidContainingOrDnameContainingOrDescriptionContainingOrTelContaining(
-            String did,
-            String dname,
-            String description,
-            String tel,
-            Pageable request);
+            Pageable request
+    );
 
 }
