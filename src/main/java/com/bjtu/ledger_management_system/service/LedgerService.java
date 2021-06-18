@@ -12,7 +12,7 @@ public interface LedgerService {
     Ledger createLedger(Ledger ledger);
     void insertRecord(long ledgerid, long rowid, List<Record> recordList);
     void delRecord(long ledgerid, long rowid);
-    void updateRecord(long ledgerid, List<Record> recordList);
+    void updateRecord(long ledgerid,long rowid, List<Record> recordList);
 
     JSONArray getRecordListByPage(long ledgerid, int pageNum, int pageSize);
 

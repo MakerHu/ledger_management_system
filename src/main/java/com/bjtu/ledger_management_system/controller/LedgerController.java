@@ -68,6 +68,24 @@ public class LedgerController {
         }
     }
 
+    @PostMapping("/updaterecord")
+    public Result updateRecord(HttpServletRequest request, @RequestParam long ledgerid, @RequestParam long rowid, @RequestBody List<Record> recordList){
+        try {
+            HttpSession session = request.getSession();
+            UserMsgDTO userMsgDTO = (UserMsgDTO) session.getAttribute("userMsgDTO");
+
+            ledgerService.updateRecord(ledgerid,rowid,recordList);
+
+            Long uid = userMsgDTO.getUid();
+            String content = "修改了台账记录";
+            logService.addLog(uid, content);
+            return Result.success();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
     @PostMapping("/delrecord")
     public Result delRecord(HttpServletRequest request, @RequestParam long ledgerid, @RequestParam long rowid){
         try {

@@ -2,9 +2,11 @@ package com.bjtu.ledger_management_system.serviceImpl;
 
 import com.bjtu.ledger_management_system.dao.LedgerDao;
 import com.bjtu.ledger_management_system.dao.RecordDao;
+import com.bjtu.ledger_management_system.dao.TemplateStructureContentDao;
 import com.bjtu.ledger_management_system.entity.Department;
 import com.bjtu.ledger_management_system.entity.Ledger;
 import com.bjtu.ledger_management_system.entity.Record;
+import com.bjtu.ledger_management_system.entity.TemplateStructureContent;
 import com.bjtu.ledger_management_system.service.LedgerService;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -15,6 +17,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import javax.transaction.Transactional;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
 
@@ -26,6 +29,9 @@ public class LedgerServiceImpl implements LedgerService {
 
     @Resource
     LedgerDao ledgerDao;
+
+    @Resource
+    TemplateStructureContentDao templateStructureContentDao;
 
 
     @Override
@@ -80,18 +86,36 @@ public class LedgerServiceImpl implements LedgerService {
     }
 
     @Override
-    public void updateRecord(long ledgerid, List<Record> recordList) {
-
+    public void updateRecord(long ledgerid,long rowid, List<Record> recordList) {
+        List<Record> oldRecordList = recordDao.findByLedgeridAndRowid(ledgerid,rowid);
+        for(Record rc : oldRecordList){
+            for(Record rc2 : recordList){
+                if(rc2.getStrucid() == rc.getStrucid()){
+                    rc.setValue(rc2.getValue());
+                    recordDao.save(rc);
+                }
+            }
+        }
     }
 
     @Override
     public JSONArray getRecordListByPage(long ledgerid, int pageNum, int pageSize) {
         long idFrom = (pageNum - 1) * pageSize;
         long idTo = idFrom + pageSize;
+
         List<Record> recordList = recordDao.findByLedgeridAndRowidBetween(ledgerid, idFrom, idTo);
 //        return recordList;
 
-        int columnSize = recordDao.findByLedgeridAndRowid(ledgerid, 0).size();
+        Ledger ledger = ledgerDao.findById(ledgerid).orElse(null);
+        List<TemplateStructureContent> tempStructList = templateStructureContentDao.findByTempid(ledger.getTempid());
+        List<Long> rootList = new ArrayList<>();
+        for(TemplateStructureContent tsc : tempStructList){
+            if(!rootList.contains(tsc.getSuperid())){
+                rootList.add(tsc.getSuperid());
+            }
+        }
+
+        int columnSize = tempStructList.size()-rootList.size()+1;
         int rowSize = recordList.size()/columnSize;
         JSONArray lineArray = new JSONArray();
 
