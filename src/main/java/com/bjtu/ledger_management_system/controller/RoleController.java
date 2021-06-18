@@ -1,7 +1,7 @@
 package com.bjtu.ledger_management_system.controller;
 
-
 import com.bjtu.ledger_management_system.common.Result;
+import com.bjtu.ledger_management_system.controller.dto.DistributeDTO;
 import com.bjtu.ledger_management_system.controller.dto.UserMsgDTO;
 import com.bjtu.ledger_management_system.entity.Right;
 import com.bjtu.ledger_management_system.entity.Role;
@@ -9,6 +9,8 @@ import com.bjtu.ledger_management_system.entity.User;
 import com.bjtu.ledger_management_system.service.LogService;
 import com.bjtu.ledger_management_system.service.RightService;
 import com.bjtu.ledger_management_system.controller.dto.CreateRoleInDepartDTO;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,7 +25,6 @@ public class RoleController {
     private static final long serialVersionUID = -1242493306307174690L;
     @Resource
     private RightService rightService;
-
     @Resource
     private LogService logService;
 
@@ -82,7 +83,6 @@ public class RoleController {
         }
     }
 
-
     /**
      * 修改角色
      * @param dto Role和List<Right>的集合
@@ -108,12 +108,16 @@ public class RoleController {
 
     /**
      * 分配角色
-     * @param uid 需要分配的用户id
-     * @param roleidList 角色列表
-     * @return
+     * @example POST 请求体 {
+     *     "uid": 5,
+     *     "roleidList": [ 23, 27 ]
+     * }
+     * @return Result
      */
     @PostMapping("/distribute")
-    public Result modifyOrAllotUserOneRole(HttpServletRequest request,@RequestParam(name="uid") Long uid, @RequestParam("roleidList") List<Long> roleidList) {
+    public Result modifyOrAllotUserOneRole(HttpServletRequest request, @RequestBody DistributeDTO distributeDTO) {
+        long uid = distributeDTO.getUid();
+        List<Long> roleidList = distributeDTO.getRoleidList();
         rightService.modifyOrAllotUserOneRole(uid, roleidList);
         HttpSession session = request.getSession();
         UserMsgDTO userMsgDTO= (UserMsgDTO) session.getAttribute("userMsgDTO");
