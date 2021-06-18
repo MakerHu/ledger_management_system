@@ -139,7 +139,37 @@ public class UserController {
             }
             String content="查看了系统下的的所有用户";
             logService.addLog(uid,content);
+
+
             return Result.success(userService.getAllUsers(pageNum,pageSize));
+
+        }catch (Exception e){
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    /**
+     * 获取所有用户（带用户角色）
+     * @param request
+     * @param pageNum
+     * @param pageSize
+     * @return
+     */
+    @GetMapping("/alluserswithroles")
+    public Result<Page<UserMsgDTO>> getAllUsersWithRoles(HttpServletRequest request,@RequestParam Integer pageNum, @RequestParam Integer pageSize){
+        try{
+            HttpSession session = request.getSession();
+            UserMsgDTO dto= (UserMsgDTO) session.getAttribute("userMsgDTO");
+            Long uid = dto.getUid();
+            if( pageNum <= 0){
+                return Result.error("5003", "pageNum必须大于0");
+            }
+            String content="查看了系统下的的所有用户";
+            logService.addLog(uid,content);
+
+
+            return Result.success(userService.getAllUsersWithRoles(pageNum,pageSize));
 
         }catch (Exception e){
             e.printStackTrace();

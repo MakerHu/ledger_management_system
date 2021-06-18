@@ -1,14 +1,12 @@
 package com.bjtu.ledger_management_system.serviceImpl;
 
+import com.bjtu.ledger_management_system.controller.dto.AddRecordEntity;
 import com.bjtu.ledger_management_system.controller.dto.CreateTemplateDTO;
 import com.bjtu.ledger_management_system.controller.dto.TableHeadDTO;
 import com.bjtu.ledger_management_system.dao.TemplateDao;
 import com.bjtu.ledger_management_system.dao.TemplateRelationDao;
 import com.bjtu.ledger_management_system.dao.TemplateStructureContentDao;
-import com.bjtu.ledger_management_system.entity.Template;
-import com.bjtu.ledger_management_system.entity.TemplateRelation;
-import com.bjtu.ledger_management_system.entity.TemplateStructureContent;
-import com.bjtu.ledger_management_system.entity.User;
+import com.bjtu.ledger_management_system.entity.*;
 import com.bjtu.ledger_management_system.service.TemplateService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -16,6 +14,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
@@ -127,6 +126,24 @@ public class TemplateServiceImpl implements TemplateService {
         }
 
         createTemplateDTO.setTableHead(tableHeadDTO);
+
+        //生成添加记录所需的样板
+        List<AddRecordEntity> tempRecordEntity = new ArrayList<>();
+        List<AddRecordEntity> addRecordEntity = new ArrayList<>();
+        List<Long> rootNodeList = new ArrayList<>();
+        for(TemplateStructureContent tsc2 : tempStructConList){
+            AddRecordEntity rc = new AddRecordEntity();
+            rc.setStrucid(tsc2.getStrucid());
+            rc.setValue(tsc2.getContent());
+            tempRecordEntity.add(rc);
+            rootNodeList.add(tsc2.getSuperid());
+        }
+        for(AddRecordEntity rc2 : tempRecordEntity){
+            if(!rootNodeList.contains(rc2.getStrucid())){
+                addRecordEntity.add(rc2);
+            }
+        }
+        createTemplateDTO.setAddRecordEntity(addRecordEntity);
 
         return createTemplateDTO;
     }

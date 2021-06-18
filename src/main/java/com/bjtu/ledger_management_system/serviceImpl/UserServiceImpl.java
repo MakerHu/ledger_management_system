@@ -1,6 +1,7 @@
 package com.bjtu.ledger_management_system.serviceImpl;
 
 import com.bjtu.ledger_management_system.common.Result;
+import com.bjtu.ledger_management_system.controller.dto.UserMsgDTO;
 import com.bjtu.ledger_management_system.dao.*;
 import com.bjtu.ledger_management_system.entity.*;
 import com.bjtu.ledger_management_system.service.UserService;
@@ -230,7 +231,14 @@ public class UserServiceImpl implements UserService {
             requestRightList.addAll(rightsInThisDepartment);
             i+=2;
         }
-        return removeDuplicate(requestRightList);
+        Right allRights = rightDao.findByRightname("allRights");
+
+        if(requestRightList.contains(allRights)){
+            return rightDao.findAll();
+        }else{
+            return removeDuplicate(requestRightList);
+        }
+
     }
 
     /**
@@ -247,6 +255,33 @@ public class UserServiceImpl implements UserService {
             user.setPassword("");
         }
         return allusersPage;
+    }
+
+    public <UserMsgDTO> Page<UserMsgDTO> convertToPage(List<UserMsgDTO> list, Integer pageNum, Integer pageSize) {
+        PageRequest pageable = PageRequest.of(pageNum-1,pageSize);
+        // 当前页第一条数据在List中的位置
+        int start = (int)pageable.getOffset();
+        // 当前页最后一条数据在List中的位置
+        int end = (start + pageable.getPageSize()) > list.size() ? list.size() : ( start + pageable.getPageSize());
+        // 配置分页数据
+        if(start > end)return null;
+        return new PageImpl<UserMsgDTO>(list.subList(start, end), pageable, list.size());
+    }
+
+    @Override
+    public Page<UserMsgDTO> getAllUsersWithRoles(int pageNum, int pageSize) {
+        List<UserMsgDTO> userMsgDTOList = new ArrayList<>();
+        PageRequest pageable = PageRequest.of(pageNum-1,pageSize);
+        List<User> allusersPage = userDao.findAll();
+        for (User user : allusersPage) {
+            UserMsgDTO userMsgDTO = new UserMsgDTO();
+            user.setPassword("");
+            userMsgDTO.setUser(user);
+            userMsgDTO.setRoleList(getUserAllRoles(user.getUid()));
+            userMsgDTOList.add(userMsgDTO);
+        }
+
+        return convertToPage(userMsgDTOList,pageNum,pageSize);
     }
 
     /**

@@ -16,6 +16,7 @@ public class UserMsgDTO {
     private Date birthday;
     private String lastdid;
     private List<Role> roleListInLastDid;
+    private List<Role> roleList;
     private List<Right> rightListInLastDid;
     private List<Department> departmentList;    //用户所在的所有部门
 
@@ -81,6 +82,14 @@ public class UserMsgDTO {
 
     public List<Role> getRoleListInLastDid() {
         return roleListInLastDid;
+    }
+
+    public List<Role> getRoleList() {
+        return roleList;
+    }
+
+    public void setRoleList(List<Role> roleList) {
+        this.roleList = roleList;
     }
 
     public void setRoleListInLastDid(List<Role> roleListInLastDid) {
