@@ -9,8 +9,10 @@ import com.bjtu.ledger_management_system.entity.Role;
 import com.bjtu.ledger_management_system.entity.User;
 import com.bjtu.ledger_management_system.service.LogService;
 import com.bjtu.ledger_management_system.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -22,6 +24,8 @@ import java.util.List;
 @RequestMapping("/user")
 //@CrossOrigin
 public class UserController {
+    @Autowired
+    private BCryptPasswordEncoder encoding;
 
     @Resource
     private UserService userService;
@@ -38,6 +42,8 @@ public class UserController {
     @PostMapping("/modify")
     public Result<User> modify(HttpServletRequest request,@RequestBody User modifyUser){
         try{
+            modifyUser.setPassword(encoding.encode(modifyUser.getPassword()));
+
             User existUser = userService.findByEmail(modifyUser.getEmail());
             HttpSession session = request.getSession();
             UserMsgDTO dto= (UserMsgDTO) session.getAttribute("userMsgDTO");
