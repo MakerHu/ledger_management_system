@@ -103,6 +103,24 @@ public class LedgerServiceImpl implements LedgerService {
     }
 
     @Override
+    public int getLedgerRecordNum(long ledgerid) {
+        //计算台账一共有几列
+        Ledger ledger = ledgerDao.findById(ledgerid).orElse(null);
+        List<TemplateStructureContent> tempStructList = templateStructureContentDao.findByTempid(ledger.getTempid());
+        List<Long> rootList = new ArrayList<>();
+        for(TemplateStructureContent tsc : tempStructList){
+            if(!rootList.contains(tsc.getSuperid())){
+                rootList.add(tsc.getSuperid());
+            }
+        }
+        int columnSize = tempStructList.size()-rootList.size()+1;
+        int totalRecordNum = recordDao.findByLedgerid(ledgerid).size();
+        int rowSize = totalRecordNum/columnSize;
+
+        return rowSize;
+    }
+
+    @Override
     public JSONArray getRecordListByPage(long ledgerid, int pageNum, int pageSize) {
         long idFrom = (pageNum - 1) * pageSize;
         long idTo = idFrom + pageSize;

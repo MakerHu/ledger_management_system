@@ -14,6 +14,7 @@ public interface LedgerService {
     void delRecord(long ledgerid, long rowid);
     void updateRecord(long ledgerid,long rowid, List<Record> recordList);
 
+    int getLedgerRecordNum(long ledgerid);
     JSONArray getRecordListByPage(long ledgerid, int pageNum, int pageSize);
 
     Page<Ledger> getLedgerList(String did, int pageNum, int pageSize);

@@ -114,9 +114,11 @@ public class LedgerController {
             response.setContentType("application/json; charset=utf-8");
             PrintWriter out = null;
 
+            int totalElements = ledgerService.getLedgerRecordNum(ledgerid);
             JSONArray resultList = ledgerService.getRecordListByPage(ledgerid,pageNum,pageSize);
             JSONObject data = new JSONObject();
             data.put("content",resultList);
+            data.put("totalElements", totalElements);
 
             JSONObject res = new JSONObject();
             res.put("code", "0");
