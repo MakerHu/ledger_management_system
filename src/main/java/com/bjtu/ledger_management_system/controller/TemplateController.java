@@ -30,6 +30,7 @@ public class TemplateController {
             UserMsgDTO userMsgDTO = (UserMsgDTO) session.getAttribute("userMsgDTO");
 
             createTemplateDTO.getNewTemplate().setCreatorid(userMsgDTO.getUid());
+            createTemplateDTO.getNewTemplate().setDid(userMsgDTO.getLastdid());
             templateService.add(createTemplateDTO.getNewTemplate(), createTemplateDTO.getTableHead());
 
             Long uid = userMsgDTO.getUid();
