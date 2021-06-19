@@ -81,10 +81,11 @@ public class TemplateServiceImpl implements TemplateService {
     }
 
     @Override
-    public void add(Template newTemplate, TableHeadDTO tableHeadDTO) {
-        templateDao.save(newTemplate);
+    public Template add(Template newTemplate, TableHeadDTO tableHeadDTO) {
+        Template newtemplate = templateDao.save(newTemplate);
         strucid = 0;
         saveTableHead(newTemplate.getTempid(), tableHeadDTO, -1);
+        return newtemplate;
     }
 
     /**

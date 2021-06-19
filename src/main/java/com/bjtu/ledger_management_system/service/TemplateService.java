@@ -7,7 +7,7 @@ import com.bjtu.ledger_management_system.entity.User;
 import org.springframework.data.domain.Page;
 
 public interface TemplateService {
-    void add(Template newTemplate, TableHeadDTO tableHead);
+    Template add(Template newTemplate, TableHeadDTO tableHead);
     CreateTemplateDTO getTemplate(long tempid);
     Template findByTempId(long tempid);
     Page<Template> getTemplateList(int pageNum, int PageSize);

@@ -24,19 +24,19 @@ public class TemplateController {
     private LogService logService;
 
     @PostMapping("/create")
-    public Result createTemplate(HttpServletRequest request, @RequestBody CreateTemplateDTO createTemplateDTO) {
+    public Result<Template> createTemplate(HttpServletRequest request, @RequestBody CreateTemplateDTO createTemplateDTO) {
         try {
             HttpSession session = request.getSession();
             UserMsgDTO userMsgDTO = (UserMsgDTO) session.getAttribute("userMsgDTO");
 
             createTemplateDTO.getNewTemplate().setCreatorid(userMsgDTO.getUid());
             createTemplateDTO.getNewTemplate().setDid(userMsgDTO.getLastdid());
-            templateService.add(createTemplateDTO.getNewTemplate(), createTemplateDTO.getTableHead());
+            Template newTemplate = templateService.add(createTemplateDTO.getNewTemplate(), createTemplateDTO.getTableHead());
 
             Long uid = userMsgDTO.getUid();
             String content = "创建了台账模板" + createTemplateDTO.getNewTemplate().getTempname();
             logService.addLog(uid, content);
-            return Result.success();
+            return Result.success(newTemplate);
 
         } catch (Exception e) {
             e.printStackTrace();
