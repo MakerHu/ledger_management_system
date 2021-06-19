@@ -159,5 +159,15 @@ public class RightServiceImpl implements RightService {
         return rolepage;
     }
 
+    @Override
+    public List<Right> getRightsOfRole(long roleid) {
+        List<RolesRights> rolesRightsList = rolesRightsDao.findByRoleid(roleid);
+        List<Right> rightList = new ArrayList<>();
+        for(RolesRights rolesRights : rolesRightsList){
+            rightList.add(rightDao.findByRightid(rolesRights.getRightid()));
+        }
+        return rightList;
+    }
+
 
 }

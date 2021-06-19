@@ -149,4 +149,10 @@ public class RoleController {
         return Result.success(rightService.getSpecificRole(content,pageNum,pageSize));
     }
 
+    @GetMapping("/rightsofrole")
+    public Result<List<Right>> getRightsOfRole(HttpServletRequest request,
+                                               @RequestParam long roleid){
+        return Result.success(rightService.getRightsOfRole(roleid));
+    }
+
 }

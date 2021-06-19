@@ -64,4 +64,5 @@ public interface RightService {
      */
     Page<Role> getSpecificRole(String content, Integer pageNum, Integer pageSize);
 
+    List<Right> getRightsOfRole(long roleid);
 }
