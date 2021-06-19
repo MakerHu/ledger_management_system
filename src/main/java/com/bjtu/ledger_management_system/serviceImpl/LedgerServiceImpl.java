@@ -48,6 +48,10 @@ public class LedgerServiceImpl implements LedgerService {
             for (Record record : behindList) {
                 long oldRowid = record.getRowid();
                 record.setRowid(oldRowid + 1);
+                if(record.getStrucid() == 1){
+                    record.setValue(String.valueOf(oldRowid+1));
+                }
+
                 recordDao.save(record);
             }
         } else {
@@ -106,6 +110,7 @@ public class LedgerServiceImpl implements LedgerService {
         List<Record> recordList = recordDao.findByLedgeridAndRowidBetween(ledgerid, idFrom, idTo);
 //        return recordList;
 
+        //计算台账一共有几列
         Ledger ledger = ledgerDao.findById(ledgerid).orElse(null);
         List<TemplateStructureContent> tempStructList = templateStructureContentDao.findByTempid(ledger.getTempid());
         List<Long> rootList = new ArrayList<>();

@@ -113,3 +113,5 @@ public class UserMsgDTO {
         this.departmentList = departmentList;
     }
 }
+
+
