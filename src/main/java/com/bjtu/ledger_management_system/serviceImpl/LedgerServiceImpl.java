@@ -107,7 +107,8 @@ public class LedgerServiceImpl implements LedgerService {
         long idFrom = (pageNum - 1) * pageSize;
         long idTo = idFrom + pageSize;
 
-        List<Record> recordList = recordDao.findByLedgeridAndRowidBetween(ledgerid, idFrom, idTo);
+        Sort sort = Sort.by(Sort.Direction.ASC, "rowid");
+        List<Record> recordList = recordDao.findByLedgeridAndRowidBetween(ledgerid, idFrom, idTo,sort);
 //        return recordList;
 
         //计算台账一共有几列
