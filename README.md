@@ -188,7 +188,7 @@
      | 接口格式   | http://localhost:8081/ledger/delrecord |                                          |
      | ---------- | -------------------------------------- | ---------------------------------------- |
      | 请求方法   | POST ||
-     | 后端返回值 | 成功 | Result对象，其中data的值为Page<template> |
+     | 后端返回值 | 成功 | Result对象，其中data的值为Page\<template> |
      |                        | 失败     | Result对象                             |
      | 请求参数   | 1.台账编号：ledgerid<br/>2.行号：rowid |                                          |
 
