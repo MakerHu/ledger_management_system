@@ -16,6 +16,8 @@ public interface LedgerDao extends JpaRepository<Ledger, Long> {
     Page<Ledger> findByDid(String did, Pageable pageable);
     List<Ledger> findByCreatorid(long creatorId);
 
+    void deleteLedgerByLedgerid(long ledgerid);
+
 
     /**
      * 模糊查询台账列表

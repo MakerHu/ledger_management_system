@@ -158,6 +158,24 @@ public class LedgerController {
         }
     }
 
+    @PostMapping("/delledger")
+    public Result delLedger(HttpServletRequest request, @RequestParam long ledgerid){
+        try {
+            HttpSession session = request.getSession();
+            UserMsgDTO userMsgDTO = (UserMsgDTO) session.getAttribute("userMsgDTO");
+
+            ledgerService.delLedger(ledgerid);
+
+            Long uid = userMsgDTO.getUid();
+            String content = "删除了台账";
+            logService.addLog(uid, content);
+            return Result.success();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
     /**
      * 模糊查找用户
      * @param request

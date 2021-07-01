@@ -19,6 +19,8 @@ public interface LedgerService {
 
     Page<Ledger> getLedgerList(String did, int pageNum, int pageSize);
 
+    boolean delLedger(long ledgerid);
+
     /**
      * 模糊查找台账
      * @param content

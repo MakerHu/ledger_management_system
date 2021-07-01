@@ -167,6 +167,13 @@ public class LedgerServiceImpl implements LedgerService {
         return ledgerPage;
     }
 
+    @Override
+    public boolean delLedger(long ledgerid) {
+        recordDao.deleteRecordsByLedgerid(ledgerid);
+        ledgerDao.deleteLedgerByLedgerid(ledgerid);
+        return true;
+    }
+
 
     /**
      * 模糊查询台账

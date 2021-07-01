@@ -16,4 +16,5 @@ public interface RecordDao extends JpaRepository<Record,Long>{
     List<Record> findByLedgeridAndRowidGreaterThanEqual(long ledgerid, long rowid);
     void deleteAllByLedgeridAndRowid(long ledgerid, long rowid);
     List<Record> findByLedgeridAndRowidBetween(long ledgerid, long idfrom, long idto, Sort sort);
+    void deleteRecordsByLedgerid(long ledgerid);
 }
