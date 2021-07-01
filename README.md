@@ -1,6 +1,3 @@
-# ledger_management_system
-台账管理系统后端
-
 # 项目框架
 
 ![项目结构图](https://gitee.com/MakerHu/typora_images/raw/master/img/20210702005432.png)
@@ -206,8 +203,6 @@
 
 
 
-
-
 ## 日志管理
 
 1. 查看日志
@@ -225,15 +220,249 @@
 
 ## 开发环境
 
+- MySQL 5.6.38
+- Java8
+- Maven 3.6.3
+- Springboot 2.3.9
+
 ## 克隆项目
 
+
+
 ## 配置数据库
+
+MySQL
+
+- 数据库名称：lms
+
+- 数据库用户名：root
+
+- 数据库密码：你的数据库root用户的密码
+
+- 数据库初始化sql脚本
+
+  ```sql
+  SET NAMES utf8mb4;
+  SET FOREIGN_KEY_CHECKS = 0;
+  
+  -- ----------------------------
+  -- Table structure for department
+  -- ----------------------------
+  DROP TABLE IF EXISTS `department`;
+  CREATE TABLE `department`  (
+    `did` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+    `dname` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+    `dmanager` bigint(10) NULL DEFAULT NULL,
+    `createtime` datetime NOT NULL,
+    `description` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
+    `tel` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
+    PRIMARY KEY (`did`) USING BTREE
+  ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Compact;
+  
+  -- ----------------------------
+  -- Records of department
+  -- ----------------------------
+  INSERT INTO `department` VALUES ('0', 'rootDepartment', 1, '2021-04-22 00:00:00', '根部门', '234325');
+  INSERT INTO `department` VALUES ('0.1', '中国石油大学公安部', 1, '2021-06-19 23:42:24', '中国石油大学公安部', '12345678');
+  
+  -- ----------------------------
+  -- Table structure for ledger
+  -- ----------------------------
+  DROP TABLE IF EXISTS `ledger`;
+  CREATE TABLE `ledger`  (
+    `ledgerid` bigint(10) NOT NULL AUTO_INCREMENT,
+    `ledgername` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+    `did` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+    `creatorid` bigint(10) NOT NULL,
+    `tempid` bigint(10) NOT NULL,
+    `description` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
+    `createtime` datetime NOT NULL,
+    PRIMARY KEY (`ledgerid`) USING BTREE
+  ) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Compact;
+  
+  -- ----------------------------
+  -- Table structure for log
+  -- ----------------------------
+  DROP TABLE IF EXISTS `log`;
+  CREATE TABLE `log`  (
+    `logid` bigint(20) NOT NULL AUTO_INCREMENT,
+    `operatorid` bigint(20) NOT NULL,
+    `operatorname` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+    `time` datetime NOT NULL,
+    `content` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+    PRIMARY KEY (`logid`) USING BTREE
+  ) ENGINE = InnoDB AUTO_INCREMENT = 42 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Compact;
+  
+  -- ----------------------------
+  -- Table structure for record
+  -- ----------------------------
+  DROP TABLE IF EXISTS `record`;
+  CREATE TABLE `record`  (
+    `id` bigint(10) NOT NULL AUTO_INCREMENT,
+    `ledgerid` bigint(10) NOT NULL,
+    `strucid` bigint(10) NOT NULL,
+    `createtime` datetime NOT NULL,
+    `rowid` bigint(10) NOT NULL,
+    `value` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
+    PRIMARY KEY (`id`) USING BTREE
+  ) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Compact;
+  
+  -- ----------------------------
+  -- Table structure for rights
+  -- ----------------------------
+  DROP TABLE IF EXISTS `rights`;
+  CREATE TABLE `rights`  (
+    `rightid` bigint(10) NOT NULL AUTO_INCREMENT,
+    `rightname` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+    `description` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
+    PRIMARY KEY (`rightid`) USING BTREE
+  ) ENGINE = InnoDB AUTO_INCREMENT = 15 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Compact;
+  
+  -- ----------------------------
+  -- Records of rights
+  -- ----------------------------
+  INSERT INTO `rights` VALUES (1, 'allRights', '所有权限');
+  INSERT INTO `rights` VALUES (2, 'ledger:view', '查看台账');
+  INSERT INTO `rights` VALUES (3, 'ledger:edit', '编辑台账');
+  INSERT INTO `rights` VALUES (4, 'template:view', '查看台账模板');
+  INSERT INTO `rights` VALUES (5, 'template:edit', '编辑台账模板');
+  INSERT INTO `rights` VALUES (6, 'role:view', '查看角色');
+  INSERT INTO `rights` VALUES (7, 'role:edit', '编辑角色');
+  INSERT INTO `rights` VALUES (8, 'user:view', '查看用户');
+  INSERT INTO `rights` VALUES (9, 'user:edit', '编辑用户');
+  INSERT INTO `rights` VALUES (10, 'department:view', '查看部门');
+  INSERT INTO `rights` VALUES (11, 'department:edit', '编辑部门');
+  INSERT INTO `rights` VALUES (12, 'right:view', '查看权限');
+  INSERT INTO `rights` VALUES (13, 'right:edit', '编辑权限');
+  INSERT INTO `rights` VALUES (14, 'log', '查看日志');
+  
+  -- ----------------------------
+  -- Table structure for role
+  -- ----------------------------
+  DROP TABLE IF EXISTS `role`;
+  CREATE TABLE `role`  (
+    `roleid` bigint(10) NOT NULL AUTO_INCREMENT,
+    `rolename` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+    `did` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+    `description` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
+    PRIMARY KEY (`roleid`) USING BTREE
+  ) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Compact;
+  
+  -- ----------------------------
+  -- Records of role
+  -- ----------------------------
+  INSERT INTO `role` VALUES (1, 'admin', '0', '超级管理员');
+  INSERT INTO `role` VALUES (2, 'dmanager', '0.1', '中国石油大学公安部管理员');
+  
+  -- ----------------------------
+  -- Table structure for roles_rights
+  -- ----------------------------
+  DROP TABLE IF EXISTS `roles_rights`;
+  CREATE TABLE `roles_rights`  (
+    `id` bigint(10) NOT NULL AUTO_INCREMENT,
+    `roleid` bigint(10) NOT NULL,
+    `rightid` bigint(10) NOT NULL,
+    PRIMARY KEY (`id`) USING BTREE
+  ) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Compact;
+  
+  -- ----------------------------
+  -- Records of roles_rights
+  -- ----------------------------
+  INSERT INTO `roles_rights` VALUES (1, 1, 1);
+  INSERT INTO `roles_rights` VALUES (2, 2, 1);
+  
+  -- ----------------------------
+  -- Table structure for template
+  -- ----------------------------
+  DROP TABLE IF EXISTS `template`;
+  CREATE TABLE `template`  (
+    `tempid` bigint(10) NOT NULL AUTO_INCREMENT,
+    `creatorid` bigint(10) NOT NULL,
+    `createtime` datetime NOT NULL,
+    `did` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+    `tempname` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+    `description` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
+    PRIMARY KEY (`tempid`) USING BTREE
+  ) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Compact;
+  
+  -- ----------------------------
+  -- Table structure for template_relation
+  -- ----------------------------
+  DROP TABLE IF EXISTS `template_relation`;
+  CREATE TABLE `template_relation`  (
+    `id` bigint(10) NOT NULL AUTO_INCREMENT,
+    `tempid` bigint(10) NOT NULL,
+    `superid` bigint(10) NOT NULL,
+    `subid` bigint(10) NOT NULL,
+    PRIMARY KEY (`id`) USING BTREE
+  ) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Compact;
+  
+  -- ----------------------------
+  -- Table structure for template_structure_content
+  -- ----------------------------
+  DROP TABLE IF EXISTS `template_structure_content`;
+  CREATE TABLE `template_structure_content`  (
+    `id` bigint(10) NOT NULL AUTO_INCREMENT,
+    `tempid` bigint(10) NOT NULL,
+    `strucid` bigint(10) NOT NULL,
+    `content` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
+    `superid` bigint(10) NOT NULL,
+    PRIMARY KEY (`id`) USING BTREE
+  ) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Compact;
+  
+  -- ----------------------------
+  -- Table structure for user
+  -- ----------------------------
+  DROP TABLE IF EXISTS `user`;
+  CREATE TABLE `user`  (
+    `uid` bigint(10) NOT NULL AUTO_INCREMENT,
+    `uname` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+    `gender` tinyint(1) NULL DEFAULT NULL,
+    `email` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+    `password` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+    `birthday` date NULL DEFAULT NULL,
+    `lastdid` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
+    PRIMARY KEY (`uid`) USING BTREE
+  ) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Compact;
+  
+  -- ----------------------------
+  -- Records of user
+  -- ----------------------------
+  INSERT INTO `user` VALUES (1, 'admin', 1, 'admin@lms.com', '$2a$10$GSpoh6lTaiGhEon0PT6.y.QMOakYmA24s/jb9eEuwch/hcRcvjDRS', '2000-05-03', '0');
+  
+  -- ----------------------------
+  -- Table structure for users_roles
+  -- ----------------------------
+  DROP TABLE IF EXISTS `users_roles`;
+  CREATE TABLE `users_roles`  (
+    `id` bigint(10) NOT NULL AUTO_INCREMENT,
+    `uid` bigint(10) NOT NULL,
+    `roleid` bigint(10) NOT NULL,
+    PRIMARY KEY (`id`) USING BTREE
+  ) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Compact;
+  
+  -- ----------------------------
+  -- Records of users_roles
+  -- ----------------------------
+  INSERT INTO `users_roles` VALUES (1, 1, 1);
+  INSERT INTO `users_roles` VALUES (2, 1, 2);
+  
+  SET FOREIGN_KEY_CHECKS = 1;
+  ```
+
+  
 
 # 项目部署
 
 ## 项目打包
 
+
+
 ## 服务器环境配置
 
+
+
 ## 运行jar包
+
+
 
