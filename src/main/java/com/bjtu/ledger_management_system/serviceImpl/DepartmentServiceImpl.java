@@ -41,10 +41,13 @@ public class DepartmentServiceImpl implements DepartmentService {
         }
         roleDao.save(role);
 
-        RolesRights roleright = new RolesRights();
-        roleright.setRoleid(role.getRoleid());
-        roleright.setRightid((long)1);
-        rolesRightsDao.save(roleright);
+        long[] rightsid = {2, 3, 4, 5, 8, 12};
+        for (long rightid : rightsid){
+            RolesRights roleright = new RolesRights();
+            roleright.setRoleid(role.getRoleid());
+            roleright.setRightid(rightid);
+            rolesRightsDao.save(roleright);
+        }
 
         UsersRoles newUsersRoles = new UsersRoles();
         newUsersRoles.setRoleid(role.getRoleid());
