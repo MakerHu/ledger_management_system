@@ -229,17 +229,38 @@
 
 ## 克隆项目
 
+1. 打开IDEA
 
+   ![克隆项目](https://gitee.com/MakerHu/typora_images/raw/master/img/20210702031129.png)
+
+   输入URL：`https://github.com/MakerHu/ledger_management_system.git`
+
+   ![克隆项目](https://gitee.com/MakerHu/typora_images/raw/master/img/20210702031327.png)
+
+2. 等待项目克隆完成且依赖自动安装完成后即可运行（前提是数据库配置正确，见下一步）
 
 ## 配置数据库
 
 MySQL
 
-- 数据库名称：lms
+- 创建数据库：lms
 
 - 数据库用户名：root
 
 - 数据库密码：你的数据库root用户的密码
+
+- 项目配置文件：application.yml
+
+  ```yaml
+  spring:
+    datasource:
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      username: <你的数据库用户(如root)>
+      password: <你的数据库密码>
+      url: jdbc:mysql://182.92.115.193:3306/lms?useUnicode=true&characterEncoding=utf-8&allowMultiQueries=true&useSSL=false&serverTimezone=GMT%2b8
+  ```
+
+  
 
 - 数据库初始化sql脚本
 
@@ -458,13 +479,24 @@ MySQL
 
 ## 项目打包
 
+1. 在Maven管理中分别点击clean-package
 
+![IDEA项目打包](https://gitee.com/MakerHu/typora_images/raw/master/img/20210702031933.png)
+
+2. 得到jar包
+
+![](https://gitee.com/MakerHu/typora_images/raw/master/img/20210702032033.png)
+
+3. 将jar包上传至服务器中
 
 ## 服务器环境配置
 
-
+- 服务器操作系统：CentOS
+- java：jdk1.8
 
 ## 运行jar包
 
+cd到jar包所在文件夹下
 
+`nohup java -jar ledger_management_system-0.0.1-SNAPSHOT.jar > system.log 2>&1 &`
 
